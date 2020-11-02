@@ -1,0 +1,51 @@
+﻿@model IEnumerable<UKnowledge.Web.Models.ViewModels.RoleViewModel>
+
+@{
+    ViewData["Title"] = "RoleList";
+}
+
+<h1>RoleList</h1>
+@if (!string.IsNullOrEmpty(ViewBag.Message) && ViewBag.Message != "Role Successfully Deleted")
+{
+    <div class="col-md-12">
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Message
+        </div>
+    </div>
+}
+@if (!string.IsNullOrEmpty(ViewBag.Message) && ViewBag.Message == "Role Successfully Deleted")
+{
+    <div class="col-md-12">
+        <div class="alert alert-success" role="alert">
+            @ViewBag.Message
+        </div>
+    </div>
+}
+
+<p>
+    <a asp-action="CreateRole">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditRole", new { roleId = item.Id }) |
+                    @Html.ActionLink("Delete", "DeleteRole", new { roleId = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

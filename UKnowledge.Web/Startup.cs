@@ -5,9 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using UKnowledge.Web.DbContext;
+using UKnowledge.Web.Models.AuthenticationModels;
 
 namespace UKnowledge.Web
 {
@@ -24,6 +28,26 @@ namespace UKnowledge.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddControllers();
+            services.AddDbContext<UKnowledgeDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 4;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.SignIn.RequireConfirmedEmail = false;
+            })
+                .AddEntityFrameworkStores<UKnowledgeDbContext>();
+            //this part is required for claim based authentication
+            //    
+            //    .AddDefaultTokenProviders();
+            //identity.AddClaimsPrincipalFactory<ClaimsPrincipalFactory>();
+            #region basic authentication
+            services.AddAuthentication();
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

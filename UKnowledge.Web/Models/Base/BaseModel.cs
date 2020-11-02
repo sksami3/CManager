@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace UKnowledge.Web.Models.Base
 {
+    // <summary>
+    /// Base model has the common elements as it's properties. So every model would be inharited from this BaseModel
+    /// </summary>
     public class BaseModel
     {
         [Key]

@@ -1,0 +1,48 @@
+﻿@model UKnowledge.Web.Models.ViewModels.RoleViewModel
+
+@{
+    ViewData["Title"] = "EditRole";
+}
+
+<h1>EditRole</h1>
+
+<div class="row">
+    @if (!string.IsNullOrEmpty(ViewBag.Message) && ViewBag.Message != "Role Successfully Edited")
+    {
+        <div class="col-md-12">
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Message
+            </div>
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(ViewBag.Message) && ViewBag.Message == "Role Successfully Edited")
+    {
+        <div class="col-md-12">
+            <div class="alert alert-success" role="alert">
+                @ViewBag.Message
+            </div>
+        </div>
+    }
+    <div class="col-md-4">
+        <form asp-action="EditRole">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+                <input hidden asp-for="Id" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
