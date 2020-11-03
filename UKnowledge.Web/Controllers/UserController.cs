@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Transactions;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using UKnowledge.Web.Enums;
 using UKnowledge.Web.Models.AuthenticationModels;
 using UKnowledge.Web.Models.ViewModels;
 
@@ -44,7 +48,7 @@ namespace UKnowledge.Web.Controllers
                     try
                     {
                         var role = await _roleManager.FindByIdAsync(userViewModel.RoleId);
-                        
+
                         var result = await _userManager.CreateAsync(newUser, userViewModel.Password);
                         if (result.Succeeded)
                         {
@@ -114,6 +118,70 @@ namespace UKnowledge.Web.Controllers
                 ViewBag.Message = "Validation Error";
                 return View();
             }
+        }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<ActionResult> Login(UserViewModel userViewModel)
+        {
+            var user = await _userManager.FindByNameAsync(userViewModel.UsernameOrEmail) ?? await _userManager.FindByEmailAsync(userViewModel.UsernameOrEmail);
+            if (user == null)
+            {
+                ViewBag.Message = "No user found with this username/email.";
+                return View();
+            }
+            try
+            {
+                var result = await _signInManager.PasswordSignInAsync(user, userViewModel.Password, false, true);
+                if (result.Succeeded)
+                {
+                    //as each user can have only one role, so we can take single
+                    var role = (await _userManager.GetRolesAsync(user)).Single();
+                    #region
+                    var claims = new List<Claim>
+                        {
+                          new Claim(ClaimTypes.Name, user.UserName),
+                          new Claim(ClaimTypes.Email, user.Email),
+                          new Claim(ClaimTypes.Role, role)
+                        };
+
+                    var claimsIdentity = new ClaimsIdentity(
+                      claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var authProperties = new AuthenticationProperties();
+
+                    await HttpContext.SignInAsync(
+                      CookieAuthenticationDefaults.AuthenticationScheme,
+                      new ClaimsPrincipal(claimsIdentity),
+                      authProperties);
+                    #endregion
+                    if (role == RoleEnum.Staff.ToString())
+                        return RedirectToAction("Index", "Staff");
+                    else
+                        return RedirectToAction("Index", "Student");
+                }
+                else
+                {
+                    ViewBag.Message = "Please enter correct password.";
+                    return View();
+                }
+
+            }
+            catch (Exception e)
+            {
+                ViewBag.Message = "Error occoured!!";
+                return View();
+                throw e;
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            await HttpContext.SignOutAsync("Cookies");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

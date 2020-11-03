@@ -26,7 +26,7 @@ namespace UKnowledge.Web.Models.ViewModels
         [DataType(DataType.Password)]
         public string Password { get; set; }
         [Required(ErrorMessage = "Confirm Password is required")]
-        [StringLength(50, ErrorMessage = "Must be between 5 and 50 characters", MinimumLength = 5)]
+        [StringLength(50, ErrorMessage = "Must be between 5 and 50 characters", MinimumLength = 4)]
         [DataType(DataType.Password)]
         [Compare("Password")]
         [Display(Name = "Confirm Password")]
@@ -35,5 +35,8 @@ namespace UKnowledge.Web.Models.ViewModels
         [Required]
         [DisplayName("Roles")]
         public string RoleId { get; set; }
+        [Required]
+        [DisplayName("Username or Email")]
+        public string UsernameOrEmail { get; set; }
     }
 }
