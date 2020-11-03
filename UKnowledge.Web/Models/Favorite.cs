@@ -11,12 +11,12 @@ namespace UKnowledge.Web.Models
     public class Favorite : BaseModel
     {
         [ForeignKey("Course")]
-        public double CourseId { get; set; }
-        public Course Course { get; set; }
+        public int CourseId { get; set; }
+        public virtual Course Course { get; set; }
         //User with student Role
         [ForeignKey("User")]
         public string UserId { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
     }
 }

@@ -10,8 +10,9 @@ namespace UKnowledge.Web.Models
     public class Attachments : BaseModel
     {
         public string FileName { get; set; }
+        public string SavedFileName { get; set; }
         [ForeignKey("Course")]
-        public double CourseId { get; set; }
-        public Course Course { get; set; }
+        public int CourseId { get; set; }
+        public virtual Course Course { get; set; }
     }
 }

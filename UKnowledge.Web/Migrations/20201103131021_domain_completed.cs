@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace UKnowledge.Web.Migrations
 {
-    public partial class basic_model_created : Migration
+    public partial class domain_completed : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -50,18 +50,23 @@ namespace UKnowledge.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tutors",
+                name: "Courses",
                 columns: table => new
                 {
-                    Id = table.Column<double>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     UpdatedDate = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    ModifiedBy = table.Column<string>(nullable: true),
                     IsDelete = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Title = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    TutorName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tutors", x => x.Id);
+                    table.PrimaryKey("PK_Courses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -171,38 +176,19 @@ namespace UKnowledge.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Courses",
-                columns: table => new
-                {
-                    Id = table.Column<double>(nullable: false),
-                    CreatedDate = table.Column<DateTime>(nullable: false),
-                    UpdatedDate = table.Column<DateTime>(nullable: false),
-                    IsDelete = table.Column<bool>(nullable: false),
-                    Title = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    TutorId = table.Column<double>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Courses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Courses_Tutors_TutorId",
-                        column: x => x.TutorId,
-                        principalTable: "Tutors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Attachments",
                 columns: table => new
                 {
-                    Id = table.Column<double>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     UpdatedDate = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    ModifiedBy = table.Column<string>(nullable: true),
                     IsDelete = table.Column<bool>(nullable: false),
                     FileName = table.Column<string>(nullable: true),
-                    CourseId = table.Column<double>(nullable: false)
+                    SavedFileName = table.Column<string>(nullable: true),
+                    CourseId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -219,11 +205,14 @@ namespace UKnowledge.Web.Migrations
                 name: "Favorites",
                 columns: table => new
                 {
-                    Id = table.Column<double>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     UpdatedDate = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    ModifiedBy = table.Column<string>(nullable: true),
                     IsDelete = table.Column<bool>(nullable: false),
-                    CourseId = table.Column<double>(nullable: false),
+                    CourseId = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -248,7 +237,7 @@ namespace UKnowledge.Web.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
-                    CourseId = table.Column<double>(nullable: false)
+                    CourseId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -312,11 +301,6 @@ namespace UKnowledge.Web.Migrations
                 column: "CourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Courses_TutorId",
-                table: "Courses",
-                column: "TutorId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Favorites_CourseId",
                 table: "Favorites",
                 column: "CourseId");
@@ -366,9 +350,6 @@ namespace UKnowledge.Web.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Tutors");
         }
     }
 }

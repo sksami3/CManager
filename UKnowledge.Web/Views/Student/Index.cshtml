@@ -1,0 +1,46 @@
+﻿@model IEnumerable<UKnowledge.Web.Models.ViewModels.CourseViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Course List</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TutorName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TutorName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedBy)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "CourseDetails", new { courseId = item.CourseId })
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

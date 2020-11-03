@@ -21,7 +21,7 @@ namespace UKnowledge.Web.DbContext
         public DbSet<Attachments> Attachments { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<Course> Courses { get; set; }
-        public DbSet<Tutor> Tutors { get; set; }
+        public DbSet<UserCourse> UserCourses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,6 +38,10 @@ namespace UKnowledge.Web.DbContext
                 .WithMany(c => c.UserCourses)
                 .HasForeignKey(uc => uc.CourseId);
             #endregion
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
         }
     }
 }

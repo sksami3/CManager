@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UKnowledge.Web.DbContext;
 
 namespace UKnowledge.Web.Migrations
 {
     [DbContext(typeof(UKnowledgeDbContext))]
-    partial class UKnowledgeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201103131021_domain_completed")]
+    partial class domain_completed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -347,7 +349,7 @@ namespace UKnowledge.Web.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("UserCourses");
+                    b.ToTable("UserCourse");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

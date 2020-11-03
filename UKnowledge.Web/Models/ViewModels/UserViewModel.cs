@@ -10,10 +10,6 @@ namespace UKnowledge.Web.Models.ViewModels
 {
     public class UserViewModel
     {
-        [Display(Name ="First Name (Optional)")]
-        public string FirstName { get; set; }
-        [Display(Name = "Last Name (Optional)")]
-        public string LastName { get; set; }
         [Required]
         [DataType(DataType.EmailAddress, ErrorMessage = "The Email field is not a valid e-mail address.")]
         [Display(Name = "Email")]

@@ -10,13 +10,15 @@ namespace UKnowledge.Web.Models
 {
     public class Course : BaseModel
     {
+        public Course()
+        {
+            UserCourses = new List<UserCourse>();
+        }
         public string Title { get; set; }
         public string  Description { get; set; }
-        [ForeignKey("Tutor")]
-        public double TutorId { get; set; }
-        public Tutor Tutor { get; set; }
-        public ICollection<Attachments> Lectures { get; set; }
+        public string TutorName { get; set; }
+        public virtual ICollection<Attachments> Lectures { get; set; }
         //the users with student type roles
-        public ICollection<UserCourse> UserCourses { get; set; }
+        public virtual ICollection<UserCourse> UserCourses { get; set; }
     }
 }

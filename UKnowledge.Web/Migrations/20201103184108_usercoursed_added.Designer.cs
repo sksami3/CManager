@@ -10,8 +10,8 @@ using UKnowledge.Web.DbContext;
 namespace UKnowledge.Web.Migrations
 {
     [DbContext(typeof(UKnowledgeDbContext))]
-    [Migration("20201102181502_basic_model_created")]
-    partial class basic_model_created
+    [Migration("20201103184108_usercoursed_added")]
+    partial class usercoursed_added
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -154,12 +154,16 @@ namespace UKnowledge.Web.Migrations
 
             modelBuilder.Entity("UKnowledge.Web.Models.Attachments", b =>
                 {
-                    b.Property<double>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("float");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("CourseId")
-                        .HasColumnType("float");
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -169,6 +173,12 @@ namespace UKnowledge.Web.Migrations
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SavedFileName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -256,9 +266,13 @@ namespace UKnowledge.Web.Migrations
 
             modelBuilder.Entity("UKnowledge.Web.Models.Course", b =>
                 {
-                    b.Property<double>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("float");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -269,36 +283,44 @@ namespace UKnowledge.Web.Migrations
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("TutorId")
-                        .HasColumnType("float");
+                    b.Property<string>("TutorName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TutorId");
-
                     b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("UKnowledge.Web.Models.Favorite", b =>
                 {
-                    b.Property<double>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("float");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("CourseId")
-                        .HasColumnType("float");
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -315,42 +337,19 @@ namespace UKnowledge.Web.Migrations
                     b.ToTable("Favorites");
                 });
 
-            modelBuilder.Entity("UKnowledge.Web.Models.Tutor", b =>
-                {
-                    b.Property<double>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDelete")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Tutors");
-                });
-
             modelBuilder.Entity("UKnowledge.Web.Models.UserCourse", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<double>("CourseId")
-                        .HasColumnType("float");
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
 
                     b.HasKey("UserId", "CourseId");
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("UserCourse");
+                    b.ToTable("UserCourses");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -409,15 +408,6 @@ namespace UKnowledge.Web.Migrations
                     b.HasOne("UKnowledge.Web.Models.Course", "Course")
                         .WithMany("Lectures")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("UKnowledge.Web.Models.Course", b =>
-                {
-                    b.HasOne("UKnowledge.Web.Models.Tutor", "Tutor")
-                        .WithMany()
-                        .HasForeignKey("TutorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

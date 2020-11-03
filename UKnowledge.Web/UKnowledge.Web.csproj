@@ -5,8 +5,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\**" />
+    <Content Remove="Migrations\**" />
+    <EmbeddedResource Remove="Migrations\**" />
+    <None Remove="Migrations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Migrations\20201103131021_domain_completed.cs" />
+    <Compile Include="Migrations\20201103131021_domain_completed.Designer.cs" />
+    <Compile Include="Migrations\20201103184108_usercoursed_added.cs" />
+    <Compile Include="Migrations\20201103184108_usercoursed_added.Designer.cs" />
+    <Compile Include="Migrations\UKnowledgeDbContextModelSnapshot.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">
       <PrivateAssets>all</PrivateAssets>
@@ -16,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Staff\" />
+    <Folder Include="wwwroot\Attachments\" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,103 @@
+﻿@model UKnowledge.Web.Models.ViewModels.CourseViewModel
+
+@{
+    ViewData["Title"] = "CourseDetails";
+}
+
+<h1>Course Details</h1>
+
+<hr />
+<div class="row">
+    @if (!string.IsNullOrEmpty(ViewBag.Message) && (ViewBag.Message != "Saved successfully." && ViewBag.Message != "Removed successfully."))
+    {
+        <div class="col-md-12">
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Message
+            </div>
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(ViewBag.Message) && (ViewBag.Message == "Saved successfully." || ViewBag.Message == "Removed successfully."))
+    {
+        <div class="col-md-12">
+            <div class="alert alert-success" role="alert">
+                @ViewBag.Message
+            </div>
+        </div>
+    }
+    <div class="col-md-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Title" class="control-label"></label>
+            <input asp-for="Title" class="form-control" readonly disabled />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="TutorName" class="control-label"></label>
+            <input asp-for="TutorName" class="form-control" readonly disabled />
+            <span asp-validation-for="TutorName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="control-label"></label>
+            <textarea asp-for="Description" rows="5" cols="40" class="control-control" readonly disabled></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        @if (Model.IsCreatedByCurrentUser)
+        {
+            <div class="form-group">
+                @Html.ActionLink(
+                   "Remove This Course",
+                   "RemoveTheCourse",                         // controller action
+                   "Student",        // controller
+                   new { Model.CourseId },         // action parameters aka route values
+                   new { @class = "btn btn-danger" })
+            </div>
+        }
+        else
+        {
+            <div class="form-group">
+                @Html.ActionLink(
+                   "Save This Course",
+                   "SaveTheCourse",                         // controller action
+                   "Student",        // controller
+                   new { Model.CourseId },         // action parameters aka route values
+                   new { @class = "btn btn-warning" })
+            </div>
+        }
+
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-12">
+                <label class="label label-primary label-outlined">Attachments</label>
+            </div>
+            <div>
+                @if (Model.Attachments.Count != 0)
+                {
+                    foreach (var _file in Model.Attachments)
+                    {
+                        <div class="file-list">
+                            <ul>
+                                <li><a href="DownloadAttachmentFile?fileName=@_file.SavedFileName" title="Download" target="_blank">@_file.FileName</a></li>
+                            </ul>
+                        </div>
+
+                    }
+                }
+                else
+                {
+                    <div class="file-list">
+                        <p>no attachments available</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

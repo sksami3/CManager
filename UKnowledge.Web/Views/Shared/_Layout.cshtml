@@ -24,14 +24,20 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
 
-                        @if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.FindByNameAsync(User.Identity.Name).Result,UKnowledge.Web.Enums.RoleEnum.Staff.ToString()))
+                        @if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.FindByNameAsync(User.Identity.Name).Result, UKnowledge.Web.Enums.RoleEnum.Staff.ToString()))
                         {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Staff" asp-action="AddCourse">Add Course</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Staff" asp-action="AddCourse">Add Course</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Staff" asp-action="CoursesCreatedByCurrentUser">Created Courses</a>
+                            </li>
+                        }
+                        @if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.FindByNameAsync(User.Identity.Name).Result, UKnowledge.Web.Enums.RoleEnum.Student.ToString()))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="SavedCourses">Saved Courses</a>
+                            </li>
                         }
 
                     </ul>
@@ -67,7 +73,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - UKnowledge.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2020 - UKnowledge - <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

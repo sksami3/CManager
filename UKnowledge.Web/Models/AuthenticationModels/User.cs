@@ -13,7 +13,7 @@ namespace UKnowledge.Web.Models.AuthenticationModels
         public string LastName { get; set; }
         public bool? IsActive { get; set; }
         //this field is valid for both Student and Staff type users
-        public ICollection<UserCourse> UserCourses { get; set; }
+        public virtual ICollection<UserCourse> UserCourses { get; set; }
         #region Optional
         //If account activation required
         //public Guid ActivationCode { get; set; }
