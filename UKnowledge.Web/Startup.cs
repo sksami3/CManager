@@ -44,10 +44,6 @@ namespace UKnowledge.Web
                 options.User.RequireUniqueEmail = true;
             })
                 .AddEntityFrameworkStores<UKnowledgeDbContext>();
-            //this part is required for claim based authentication
-            //    
-            //    .AddDefaultTokenProviders();
-            //identity.AddClaimsPrincipalFactory<ClaimsPrincipalFactory>();
             #region basic authentication
             services.AddAuthentication();
             #endregion

@@ -37,7 +37,12 @@ namespace UKnowledge.Web.Controllers
             if (_signInManager.IsSignedIn(User) && User.IsInRole(RoleEnum.Student.ToString()))
                 return RedirectToAction("Index", "Student");
 
-            return RedirectToAction("Error", "Home"); ;
+            return RedirectToAction("Error", "Home");
+        }
+        [AllowAnonymous]
+        public ActionResult Error()
+        {
+            return View();
         }
     }
 }
