@@ -11,7 +11,7 @@ namespace UKnowledge.Web.Models.ViewModels
     public class UserViewModel
     {
         [Required]
-        [DataType(DataType.EmailAddress, ErrorMessage = "The Email field is not a valid e-mail address.")]
+        [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "E-mail is not valid")]
         [Display(Name = "Email")]
         public string Email { get; set; }
         [Required]

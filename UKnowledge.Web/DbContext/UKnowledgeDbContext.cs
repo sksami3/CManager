@@ -19,7 +19,6 @@ namespace UKnowledge.Web.DbContext
 
         }
         public DbSet<Attachments> Attachments { get; set; }
-        public DbSet<Favorite> Favorites { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<UserCourse> UserCourses { get; set; }
 

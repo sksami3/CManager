@@ -16,6 +16,8 @@
     <Compile Include="Migrations\20201103131021_domain_completed.Designer.cs" />
     <Compile Include="Migrations\20201103184108_usercoursed_added.cs" />
     <Compile Include="Migrations\20201103184108_usercoursed_added.Designer.cs" />
+    <Compile Include="Migrations\20201104090120_favourite_table_dropped.cs" />
+    <Compile Include="Migrations\20201104090120_favourite_table_dropped.Designer.cs" />
     <Compile Include="Migrations\UKnowledgeDbContextModelSnapshot.cs" />
   </ItemGroup>
 

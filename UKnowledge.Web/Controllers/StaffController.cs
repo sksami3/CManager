@@ -14,7 +14,7 @@ using UKnowledge.Web.Models.ViewModels;
 
 namespace UKnowledge.Web.Controllers
 {
-    [Authorize(Roles ="Staff")]
+    [Authorize(Roles = "Staff")]
     public class StaffController : Controller
     {
         private readonly UKnowledgeDbContext _context;
@@ -37,7 +37,7 @@ namespace UKnowledge.Web.Controllers
             List<CourseViewModel> courseViewModels = Helper.Helper.ConvertCourseViweModelsFromCourses(courses, User.Identity.Name);
             return View(courseViewModels);
         }
-        public ActionResult AddCourse() 
+        public ActionResult AddCourse()
         {
             return View();
         }
@@ -131,7 +131,12 @@ namespace UKnowledge.Web.Controllers
                             #endregion
                         }
                         scope.Complete();
-                        ViewBag.Message = "Course Added Successfully.";
+                        if (ViewBag.Message != null)
+                        {
+                            ViewBag.Message += " but course added successfully";
+                        }
+                        else
+                            ViewBag.Message = "Course Added Successfully.";
                         return View();
                     }
                     catch (Exception e)
@@ -271,7 +276,12 @@ namespace UKnowledge.Web.Controllers
                         }
                         courseViewModel.Attachments = _context.Attachments.Where(x => x.CourseId == course.Id).ToList();
                         scope.Complete();
-                        ViewBag.Message = "Course Edited Successfully.";
+                        if (ViewBag.Message != null)
+                        {
+                            ViewBag.Message += " but course edited successfully";
+                        }
+                        else
+                            ViewBag.Message = "Course Edited Successfully.";
                         return View(courseViewModel);
                     }
                     catch (Exception e)
@@ -321,7 +331,7 @@ namespace UKnowledge.Web.Controllers
 
             return RedirectToAction("Index");
         }
-        public ActionResult DeleteAttachedFile(int? attachmentId,int? courseId)
+        public ActionResult DeleteAttachedFile(int? attachmentId, int? courseId)
         {
             if (attachmentId == null)
             {
@@ -335,7 +345,7 @@ namespace UKnowledge.Web.Controllers
             _context.Attachments.Remove(attachment);
             _context.SaveChanges();
 
-            return RedirectToAction("EditCourse","Staff", new { @courseId = courseId });
+            return RedirectToAction("EditCourse", "Staff", new { @courseId = courseId });
         }
 
         #region Attachment download
@@ -360,7 +370,7 @@ namespace UKnowledge.Web.Controllers
             if (result == "pdf")
             {
                 string mimeType = "application/pdf";
-                return File(memory, mimeType); 
+                return File(memory, mimeType);
             }
             else
             {

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UKnowledge.Web.DbContext;
 
 namespace UKnowledge.Web.Migrations
 {
     [DbContext(typeof(UKnowledgeDbContext))]
-    partial class UKnowledgeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201104090120_favourite_table_dropped")]
+    partial class favourite_table_dropped
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

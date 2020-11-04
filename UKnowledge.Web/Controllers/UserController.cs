@@ -33,20 +33,50 @@ namespace UKnowledge.Web.Controllers
         // GET: UserController
         public ActionResult SignUp()
         {
-            ViewBag.roleList = new SelectList(_roleManager.Roles.ToList(), "Id", "Name");
+            #region Dropdown
+            List<IdentityRole> identityRoles = new List<IdentityRole>()
+            {
+                new IdentityRole(){
+                    Name = RoleEnum.Staff.ToString()
+                },
+                new IdentityRole(){
+                    Name = RoleEnum.Student.ToString()
+                }
+            };
+            ViewBag.roleList = new SelectList(identityRoles, "Name", "Name");
+            #endregion 
             return View();
         }
         [HttpPost]
         public async Task<ActionResult> SignUp(UserViewModel userViewModel)
         {
-            ViewBag.roleList = new SelectList(_roleManager.Roles.ToList(), "Id", "Name");
+            #region Dropdown
+            List<IdentityRole> identityRoles = new List<IdentityRole>()
+            {
+                new IdentityRole(){
+                    Name = RoleEnum.Staff.ToString()
+                },
+                new IdentityRole(){
+                    Name = RoleEnum.Student.ToString()
+                }
+            };
+            ViewBag.roleList = new SelectList(identityRoles, "Name", "Name");
+            #endregion
             User newUser = new User { Email = userViewModel.Email, UserName = userViewModel.UserName };
             using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 try
                 {
-                    var role = await _roleManager.FindByIdAsync(userViewModel.RoleId);
-
+                    #region Here we'll find if the role is created if not the we'll create the role
+                    var role = await _roleManager.FindByNameAsync(userViewModel.RoleId); //here role id is used to carry role name
+                    if(role == null)
+                    {
+                        IdentityRole newRole = new IdentityRole();
+                        newRole.Name = userViewModel.RoleId; //here role id is used to carry role name
+                        await _roleManager.CreateAsync(newRole);
+                        role = newRole;
+                    }
+                    #endregion
                     var result = await _userManager.CreateAsync(newUser, userViewModel.Password);
                     if (result.Succeeded)
                     {
@@ -63,13 +93,7 @@ namespace UKnowledge.Web.Controllers
                         {
                             if (resultForRole.Errors.ToList().Count() != 0)
                             {
-                                string _errors = "";
-                                List<string> errors = resultForRole.Errors.Select(x => x.Description).ToList();
-                                foreach (string err in errors)
-                                {
-                                    _errors += err + " | ";
-                                }
-                                ViewBag.Message = _errors;
+                                ViewBag.Message = Helper.Helper.GetErrorList(resultForRole);
                                 scope.Dispose();
                                 return View();
                             }
@@ -85,13 +109,7 @@ namespace UKnowledge.Web.Controllers
                     {
                         if (result.Errors.ToList().Count() != 0)
                         {
-                            string _errors = "";
-                            List<string> errors = result.Errors.Select(x => x.Description).ToList();
-                            foreach (string err in errors)
-                            {
-                                _errors += err + " | ";
-                            }
-                            ViewBag.Message = _errors;
+                            ViewBag.Message = Helper.Helper.GetErrorList(result); ;
                             scope.Dispose();
                             return View();
                         }
