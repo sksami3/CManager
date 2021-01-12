@@ -10,8 +10,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using UKnowledge.Core.Entity.AuthenticationModels;
 using UKnowledge.Web.Enums;
-using UKnowledge.Web.Models.AuthenticationModels;
 using UKnowledge.Web.Models.ViewModels;
 
 namespace UKnowledge.Web.Controllers

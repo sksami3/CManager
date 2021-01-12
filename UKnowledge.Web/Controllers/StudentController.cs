@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using UKnowledge.Core.Entity;
+using UKnowledge.Core.Entity.AuthenticationModels;
+using UKnowledge.Core.Interfaces.Services;
 using UKnowledge.Web.DbContext;
 using UKnowledge.Web.Enums;
 using UKnowledge.Web.Models;
-using UKnowledge.Web.Models.AuthenticationModels;
 using UKnowledge.Web.Models.ViewModels;
 
 namespace UKnowledge.Web.Controllers
@@ -19,43 +22,49 @@ namespace UKnowledge.Web.Controllers
     [Authorize(Roles = "Student")]
     public class StudentController : Controller
     {
-        private readonly UKnowledgeDbContext _context;
+        private readonly ICourseService _courseService;
+        private readonly IAttachmentsService _attachmentsService;
+        private readonly IUserCourseService _userCourseService;
         public RoleManager<IdentityRole> _roleManager { get; }
         public UserManager<User> _userManager { get; }
-        public StudentController(UKnowledgeDbContext context, RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
+        public StudentController( 
+            RoleManager<IdentityRole> roleManager, 
+            UserManager<User> userManager,
+            ICourseService courseService,
+            IAttachmentsService attachmentsService,
+            IUserCourseService userCourseService)
         {
-            _context = context;
             _roleManager = roleManager;
             _userManager = userManager;
+            _courseService = courseService;
+            _attachmentsService = attachmentsService;
+            _userCourseService = userCourseService;
         }
         // GET: StudentController1
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            List<Course> courses = _context.Courses.ToList();
+            var courses = await _courseService.GetCourses();
+            List<CourseViewModel> courseViewModels = Helper.Helper.ConvertCourseViweModelsFromCourses(courses.ToList(), User.Identity.Name);
+
+            return View(courseViewModels);
+        }
+        public async Task<ActionResult> SavedCourses()
+        {
+            //var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            List<Course> courses = await _userCourseService.GetCoursesCreatedByCurrentUser(User);//UserCourses.Where(x => x.User == user).Select(x=> x.Course).ToList();
             List<CourseViewModel> courseViewModels = Helper.Helper.ConvertCourseViweModelsFromCourses(courses, User.Identity.Name);
 
             return View(courseViewModels);
         }
-        public ActionResult SavedCourses()
-        {
-            User user = _userManager.FindByNameAsync(User.Identity.Name).Result;
-            List<Course> courses = _context.UserCourses.Where(x => x.User == user).Select(x=> x.Course).ToList();
-            List<CourseViewModel> courseViewModels = Helper.Helper.ConvertCourseViweModelsFromCourses(courses, User.Identity.Name);
-
-            return View(courseViewModels);
-        }
-        public ActionResult CourseDetails(int? courseId, string message = "")
+        public async Task<ActionResult> CourseDetails(int courseId, string message = "")
         {
             if (!string.IsNullOrEmpty(message))
             {
                 ViewBag.Message = message;
             }
-            if (courseId == null)
-            {
-                return NotFound();
-            }
-            var course = _context.Courses.FirstOrDefault(m => m.Id == courseId);
-            User user = _userManager.FindByNameAsync(User.Identity.Name).Result;
+
+            var course = await _courseService.GetCourseById(courseId);
+            User user = await _userManager.FindByNameAsync(User.Identity.Name);
 
             if (course == null)
                 return NotFound();
@@ -67,23 +76,23 @@ namespace UKnowledge.Web.Controllers
                 courseViewModel.IsCreatedByCurrentUser = true;
             }
             #endregion
-            courseViewModel.Attachments = _context.Attachments.Where(x => x.CourseId == course.Id).ToList();
+            courseViewModel.Attachments = await _attachmentsService.GetAttachmentsByCourseId(course.Id);
 
             return View(courseViewModel);
         }
-        public ActionResult SaveTheCourse(int? courseId)
+        public async Task<ActionResult> SaveTheCourse(int courseId)
         {
             try
             {
-                var course = _context.Courses.Where(x => x.Id == courseId).SingleOrDefault();
+                var course = await _courseService.GetCourseById(courseId);
                 var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
                 UserCourse userCourse = new UserCourse()
                 {
                     User = user,
-                    Course = course
+                    Course = course,
+                    CreatedBy = User.Identity.Name
                 };
-                _context.UserCourses.Add(userCourse);
-                _context.SaveChanges();
+                await _userCourseService.Add(userCourse);
 
                 return RedirectToAction("CourseDetails", "Student", new { courseId = courseId, message = "Saved successfully." });
             }
@@ -95,16 +104,15 @@ namespace UKnowledge.Web.Controllers
 
         }
 
-        public ActionResult RemoveTheCourse(int? courseId)
+        public async Task<ActionResult> RemoveTheCourse(int courseId)
         {
             try
             {
-                var course = _context.Courses.Where(x => x.Id == courseId).SingleOrDefault();
+                var course = await _courseService.GetCourseById(courseId);
                 var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
 
-                var result = _context.UserCourses.Where(x => x.Course == course && x.User == user).SingleOrDefault();
-                _context.UserCourses.Remove(result);
-                _context.SaveChanges();
+                UserCourse result = await _userCourseService.GetUserCourseByCourseAndUser(course,user);//UserCourses.Where(x => x.Course == course && x.User == user).SingleOrDefault();
+                await _userCourseService.Remove(result.Id);
 
                 return RedirectToAction("CourseDetails", "Student", new { courseId = courseId, message = "Removed successfully." });
             }

@@ -2,10 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using UKnowledge.Core.Entity;
+using UKnowledge.Core.Entity.AuthenticationModels;
 using UKnowledge.Web.Models;
-using UKnowledge.Web.Models.AuthenticationModels;
 using UKnowledge.Web.Models.ViewModels;
 
 namespace UKnowledge.Web.Helper
@@ -52,6 +54,18 @@ namespace UKnowledge.Web.Helper
             courseViewModel.TutorName = course.TutorName;
 
             return courseViewModel;
+        }
+
+        internal static Course ConvertCourseFromCourseViewModel(CourseViewModel courseViewModel)
+        {
+            Course course = new Course();
+            course.Title = courseViewModel.Title;
+            course.TutorName = courseViewModel.TutorName;
+            course.CreatedDate = DateTime.Now;
+            course.UpdatedDate = DateTime.Now;
+            course.Description = courseViewModel.Description;
+
+            return course;
         }
     }
 }

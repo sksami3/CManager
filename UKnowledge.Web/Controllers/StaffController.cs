@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UKnowledge.Core.Entity;
+using UKnowledge.Core.Entity.AuthenticationModels;
+using UKnowledge.Core.Interfaces.Services;
 using UKnowledge.Web.DbContext;
 using UKnowledge.Web.Models;
 using UKnowledge.Web.Models.ViewModels;
@@ -17,23 +20,26 @@ namespace UKnowledge.Web.Controllers
     [Authorize(Roles = "Staff")]
     public class StaffController : Controller
     {
-        private readonly UKnowledgeDbContext _context;
+        private readonly ICourseService _courseService;
+        private readonly IAttachmentsService _attachmentsService;
         private readonly IWebHostEnvironment _env;
-        public StaffController(UKnowledgeDbContext context, IWebHostEnvironment env)
+        public StaffController(ICourseService courseService, IWebHostEnvironment env, 
+            IAttachmentsService attachmentsService)
         {
-            _context = context;
+            _courseService = courseService;
+            _attachmentsService = attachmentsService;
             _env = env;
         }
         // GET: StaffController
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            List<Course> courses = _context.Courses.ToList();
-            List<CourseViewModel> courseViewModels = Helper.Helper.ConvertCourseViweModelsFromCourses(courses, User.Identity.Name);
+            var courses = await _courseService.GetCourses();
+            List<CourseViewModel> courseViewModels = Helper.Helper.ConvertCourseViweModelsFromCourses(courses.ToList(), User.Identity.Name);
             return View(courseViewModels);
         }
-        public ActionResult CoursesCreatedByCurrentUser()
+        public async Task<ActionResult> CoursesCreatedByCurrentUser()
         {
-            List<Course> courses = _context.Courses.Where(x => x.CreatedBy == User.Identity.Name).ToList();
+            List<Course> courses = await _courseService.GetCoursesCreatedByCurrentUser(User);//.Where(x => x.CreatedBy == User.Identity.Name).ToList();
             List<CourseViewModel> courseViewModels = Helper.Helper.ConvertCourseViweModelsFromCourses(courses, User.Identity.Name);
             return View(courseViewModels);
         }
@@ -42,7 +48,7 @@ namespace UKnowledge.Web.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult AddCourse(CourseViewModel courseViewModel)
+        public async Task<ActionResult> AddCourse(CourseViewModel courseViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -51,17 +57,9 @@ namespace UKnowledge.Web.Controllers
                     try
                     {
                         #region Saving Course
-                        Course course = new Course();
-                        course.Title = courseViewModel.Title;
-                        course.TutorName = courseViewModel.TutorName;
-                        course.CreatedDate = DateTime.Now;
-                        course.UpdatedDate = DateTime.Now;
+                        Course course = Helper.Helper.ConvertCourseFromCourseViewModel(courseViewModel);
                         course.CreatedBy = User.Identity.Name;
-                        course.ModifiedBy = User.Identity.Name;
-                        course.Description = courseViewModel.Description;
-
-                        _context.Courses.Add(course);
-                        _context.SaveChanges();
+                        await _courseService.Add(course);
                         #endregion
                         if (courseViewModel.Upload != null && courseViewModel.Upload.Count() > 0)
                         {
@@ -120,11 +118,8 @@ namespace UKnowledge.Web.Controllers
                                         attachments.SavedFileName = filename;
                                         attachments.CreatedBy = User.Identity.Name;
                                         attachments.ModifiedBy = User.Identity.Name;
-                                        attachments.CreatedDate = DateTime.Now;
-                                        attachments.UpdatedDate = DateTime.Now;
 
-                                        _context.Add(attachments);
-                                        _context.SaveChanges();
+                                        _attachmentsService.Add(attachments);
                                     }
                                 }
                             }
@@ -154,41 +149,33 @@ namespace UKnowledge.Web.Controllers
             }
 
         }
-        public ActionResult CourseDetails(int? courseId)
+        public async Task<ActionResult> CourseDetails(int courseId)
         {
-            if (courseId == null)
-            {
-                return NotFound();
-            }
-            var course = _context.Courses.FirstOrDefault(m => m.Id == courseId);
+            var course = await _courseService.GetCourseById(courseId);
 
             if (course == null)
                 return NotFound();
 
             var courseViewModel = Helper.Helper.ConvertCourseViweModelFromCourse(course);
-            courseViewModel.Attachments = _context.Attachments.Where(x => x.CourseId == course.Id).ToList();
+            courseViewModel.Attachments = await _attachmentsService.GetAttachmentsByCourseId(course.Id);//Where(x => x.CourseId == course.Id).ToList();
 
             return View(courseViewModel);
         }
 
-        public ActionResult EditCourse(int? courseId)
+        public async Task<ActionResult> EditCourse(int courseId)
         {
-            if (courseId == null)
-            {
-                return NotFound();
-            }
-            var course = _context.Courses.FirstOrDefault(m => m.Id == courseId);
+            var course = await _courseService.GetCourseById(courseId);
 
             if (course == null)
                 return NotFound();
 
             var courseViewModel = Helper.Helper.ConvertCourseViweModelFromCourse(course);
-            courseViewModel.Attachments = _context.Attachments.Where(x => x.CourseId == course.Id).ToList();
+            courseViewModel.Attachments = await _attachmentsService.GetAttachmentsByCourseId(courseId);
 
             return View(courseViewModel);
         }
         [HttpPost]
-        public ActionResult EditCourse(CourseViewModel courseViewModel)
+        public async Task<ActionResult> EditCourse(CourseViewModel courseViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -197,15 +184,9 @@ namespace UKnowledge.Web.Controllers
                     try
                     {
                         #region Saving Course
-                        Course course = _context.Courses.Where(x => x.Id == courseViewModel.CourseId).FirstOrDefault();
-                        course.Title = courseViewModel.Title;
-                        course.TutorName = courseViewModel.TutorName;
-                        course.UpdatedDate = DateTime.Now;
-                        course.ModifiedBy = User.Identity.Name;
-                        course.Description = courseViewModel.Description;
+                        Course course = await _courseService.GetCourseById(courseViewModel.CourseId);
 
-                        _context.Courses.Update(course);
-                        _context.SaveChanges();
+                        await _courseService.Update(course);
                         #endregion
                         if (courseViewModel.Upload != null && courseViewModel.Upload.Count() > 0)
                         {
@@ -267,14 +248,13 @@ namespace UKnowledge.Web.Controllers
                                         attachments.CreatedDate = DateTime.Now;
                                         attachments.UpdatedDate = DateTime.Now;
 
-                                        _context.Add(attachments);
-                                        _context.SaveChanges();
+                                        await _attachmentsService.Add(attachments);
                                     }
                                 }
                             }
                             #endregion
                         }
-                        courseViewModel.Attachments = _context.Attachments.Where(x => x.CourseId == course.Id).ToList();
+                        courseViewModel.Attachments = await _attachmentsService.GetAttachmentsByCourseId(course.Id);
                         scope.Complete();
                         if (ViewBag.Message != null)
                         {
@@ -286,7 +266,7 @@ namespace UKnowledge.Web.Controllers
                     }
                     catch (Exception e)
                     {
-                        courseViewModel.Attachments = _context.Attachments.Where(x => x.CourseId == courseViewModel.CourseId).ToList();
+                        courseViewModel.Attachments = await _attachmentsService.GetAttachmentsByCourseId(courseViewModel.CourseId);
                         ViewBag.Message = "Error occoured while adding.";
                         scope.Dispose();
                         return View(courseViewModel);
@@ -299,52 +279,32 @@ namespace UKnowledge.Web.Controllers
                 return View();
             }
         }
-        public ActionResult DeleteCourse(int? courseId)
+        public async Task<ActionResult> DeleteCourse(int courseId)
         {
-            if (courseId == null)
-            {
-                return NotFound();
-            }
-            var course = _context.Courses.FirstOrDefault(m => m.Id == courseId);
+            var course = await _courseService.GetCourseById(courseId);
 
             if (course == null)
                 return NotFound();
 
             var courseViewModel = Helper.Helper.ConvertCourseViweModelFromCourse(course);
-            courseViewModel.Attachments = _context.Attachments.Where(x => x.CourseId == course.Id).ToList();
+            courseViewModel.Attachments = await _attachmentsService.GetAttachmentsByCourseId(course.Id);
 
             return View(courseViewModel);
         }
-        public ActionResult ConfirmDeleteCourse(int? courseId)
+        public async Task<ActionResult> ConfirmDeleteCourse(int courseId)
         {
-            if (courseId == null)
-            {
-                return NotFound();
-            }
-            var course = _context.Courses.FirstOrDefault(m => m.Id == courseId);
-
-            if (course == null)
-                return NotFound();
-
-            _context.Courses.Remove(course);
-            _context.SaveChanges();
+            await _courseService.Remove(courseId);
 
             return RedirectToAction("Index");
         }
-        public ActionResult DeleteAttachedFile(int? attachmentId, int? courseId)
+        public async Task<ActionResult> DeleteAttachedFile(int attachmentId, int courseId)
         {
-            if (attachmentId == null)
-            {
-                return NotFound();
-            }
-            var attachment = _context.Attachments.FirstOrDefault(m => m.Id == attachmentId);
+            var attachment = await _attachmentsService.GetAttachmentsById(attachmentId);
 
             if (attachment == null)
                 return NotFound();
 
-            _context.Attachments.Remove(attachment);
-            _context.SaveChanges();
-
+            await _courseService.Remove(attachmentId);
             return RedirectToAction("EditCourse", "Staff", new { @courseId = courseId });
         }
 
