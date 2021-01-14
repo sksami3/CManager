@@ -18,9 +18,9 @@ namespace UKnowledge.Web.Controllers
 {
     public class UserController : Controller
     {
-        public UserManager<User> _userManager { get; }
-        public SignInManager<User> _signInManager { get; }
-        public RoleManager<IdentityRole> _roleManager { get; }
+        private UserManager<User> _userManager { get; }
+        private SignInManager<User> _signInManager { get; }
+        private RoleManager<IdentityRole> _roleManager { get; }
 
         public UserController(UserManager<User> userManager,
             SignInManager<User> signInManager,

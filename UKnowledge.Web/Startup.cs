@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -53,6 +55,9 @@ namespace UKnowledge.Web
             .AddCookie();
             services.AddSignalR();
             services.Resolve();
+            services.AddMvc().AddNToastNotifyToastr();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton(typeof(IUserIdProvider), typeof(MyUserIdProvider));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -84,7 +89,7 @@ namespace UKnowledge.Web
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapHub<NotificationHub>("/notificationhub");
             });
-
+            app.UseNToastNotify();
         }
     }
 }

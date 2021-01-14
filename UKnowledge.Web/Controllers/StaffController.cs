@@ -7,13 +7,17 @@ using System.Transactions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using NToastNotify;
 using UKnowledge.Core.Entity;
 using UKnowledge.Core.Entity.AuthenticationModels;
 using UKnowledge.Core.Interfaces.Services;
 using UKnowledge.Web.DbContext;
 using UKnowledge.Web.Models;
 using UKnowledge.Web.Models.ViewModels;
+using UKnowledge.Web.Socket;
 
 namespace UKnowledge.Web.Controllers
 {
@@ -23,12 +27,18 @@ namespace UKnowledge.Web.Controllers
         private readonly ICourseService _courseService;
         private readonly IAttachmentsService _attachmentsService;
         private readonly IWebHostEnvironment _env;
-        public StaffController(ICourseService courseService, IWebHostEnvironment env, 
-            IAttachmentsService attachmentsService)
+        private readonly IHubContext<NotificationHub> _notificationHubContext;
+        private UserManager<User> _userManager { get; }
+        public StaffController(ICourseService courseService, IWebHostEnvironment env,
+            IAttachmentsService attachmentsService,
+            IHubContext<NotificationHub> notificationHubContext,
+            UserManager<User> userManager)
         {
             _courseService = courseService;
             _attachmentsService = attachmentsService;
             _env = env;
+            _notificationHubContext = notificationHubContext;
+            _userManager = userManager;
         }
         // GET: StaffController
         public async Task<ActionResult> Index()
@@ -43,7 +53,7 @@ namespace UKnowledge.Web.Controllers
             List<CourseViewModel> courseViewModels = Helper.Helper.ConvertCourseViweModelsFromCourses(courses, User.Identity.Name);
             return View(courseViewModels);
         }
-        public ActionResult AddCourse()
+        public async Task<ActionResult> AddCourse()
         {
             return View();
         }
@@ -119,7 +129,7 @@ namespace UKnowledge.Web.Controllers
                                         attachments.CreatedBy = User.Identity.Name;
                                         attachments.ModifiedBy = User.Identity.Name;
 
-                                        _attachmentsService.Add(attachments);
+                                        await _attachmentsService.Add(attachments);
                                     }
                                 }
                             }
@@ -128,10 +138,15 @@ namespace UKnowledge.Web.Controllers
                         scope.Complete();
                         if (ViewBag.Message != null)
                         {
+                            await _notificationHubContext.Clients.User("ff1").SendAsync("add", User.Identity.Name + "Created New Course");
                             ViewBag.Message += " but course added successfully";
                         }
                         else
+                        {
+                            await _notificationHubContext.Clients.User("ff1").SendAsync("add", User.Identity.Name + " has Created New Course!!!");
                             ViewBag.Message = "Course Added Successfully.";
+                        }
+
                         return View();
                     }
                     catch (Exception e)

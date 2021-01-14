@@ -11,18 +11,21 @@
     <title>@ViewData["Title"] - UKnowledge</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/tostr/toastr.css" rel="stylesheet" />
     <style>
         .alert {
             text-align: center;
         }
-        textarea{
-            width:100%;
+
+        textarea {
+            width: 100%;
         }
     </style>
 </head>
 
 <body>
     <header>
+        @await Component.InvokeAsync("NToastNotify")
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">UKnowledge</a>
@@ -88,6 +91,9 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/tostr/toastr.min.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/noti.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
