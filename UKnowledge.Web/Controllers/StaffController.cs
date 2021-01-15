@@ -10,7 +10,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
 using NToastNotify;
+using Uknowledge.Business.Utilities;
 using UKnowledge.Core.Entity;
 using UKnowledge.Core.Entity.AuthenticationModels;
 using UKnowledge.Core.Interfaces.Services;
@@ -28,17 +30,21 @@ namespace UKnowledge.Web.Controllers
         private readonly IAttachmentsService _attachmentsService;
         private readonly IWebHostEnvironment _env;
         private readonly IHubContext<NotificationHub> _notificationHubContext;
+        private Utilities _util;
         private UserManager<User> _userManager { get; }
+
         public StaffController(ICourseService courseService, IWebHostEnvironment env,
             IAttachmentsService attachmentsService,
             IHubContext<NotificationHub> notificationHubContext,
-            UserManager<User> userManager)
+            UserManager<User> userManager,
+            IConfiguration configuration)
         {
             _courseService = courseService;
             _attachmentsService = attachmentsService;
             _env = env;
             _notificationHubContext = notificationHubContext;
             _userManager = userManager;
+            _util = new Utilities(configuration.GetConnectionString("DefaultConnection"));
         }
         // GET: StaffController
         public async Task<ActionResult> Index()
@@ -135,18 +141,27 @@ namespace UKnowledge.Web.Controllers
                             }
                             #endregion
                         }
+                        #region Push Notification
+                        List<string> usernamelist = await _util.GetAllUserNamesByRole("Student");
+                        foreach (string username in usernamelist)
+                        {
+                            await _notificationHubContext.Clients.User(username).SendAsync("add", User.Identity.Name + " has Created New Course");
+                        }
+                        #endregion
                         scope.Complete();
                         if (ViewBag.Message != null)
                         {
-                            await _notificationHubContext.Clients.User("ff1").SendAsync("add", User.Identity.Name + "Created New Course");
                             ViewBag.Message += " but course added successfully";
                         }
                         else
                         {
-                            await _notificationHubContext.Clients.User("ff1").SendAsync("add", User.Identity.Name + " has Created New Course!!!");
+                            //List<string> usernamelist = await _util.GetAllUserNamesByRole("Staff");
+                            //foreach (string username in usernamelist)
+                            //{
+                            //    await _notificationHubContext.Clients.User(username).SendAsync("add", User.Identity.Name + "Created New Course");
+                            //}
                             ViewBag.Message = "Course Added Successfully.";
                         }
-
                         return View();
                     }
                     catch (Exception e)

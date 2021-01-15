@@ -13,10 +13,13 @@ connection.on("add", function (message) {
 });
 
 connection.start().then(function () {
-    connection.invoke("SendMessage", user, message).catch(function (err) {
-        return console.error(err.toString());
-    });
-    
+    //connection.invoke("SendMessage", user, message).catch(function (err) {
+    //    return console.error(err.toString());
+    //});
+    //connection.on("add", function (message) {
+    //    console.log(message);
+    //    toastr["success"](message)
+    //});
 }).catch(function (err) {
     return console.error(err.toString());
 });
