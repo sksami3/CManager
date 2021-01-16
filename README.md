@@ -6,4 +6,5 @@ A simple course management system.
 •	Entity Framework Core <br/>
 •	Identity <br/>
 •	Role Based Authorization
+•	SignalR
 
