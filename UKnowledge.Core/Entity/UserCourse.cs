@@ -11,7 +11,7 @@ namespace UKnowledge.Core.Entity
     public class UserCourse : BaseModel
     {
         [ForeignKey("User")]
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
         public virtual User User { get; set; }
         [ForeignKey("Course")]
         public int CourseId { get; set; }

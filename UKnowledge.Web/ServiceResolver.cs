@@ -24,12 +24,14 @@ namespace UKnowledge.Web
             services.AddTransient<ICourseService, CourseService>();
             services.AddTransient<IAttachmentsService, AttachmentsService>();           
             services.AddTransient<IUserCourseService, UserCourseService>();
+            services.AddTransient<IMessageService, MessageService>();
             #endregion
 
             #region repositories
             services.AddTransient<ICourseRepository, CouseRepository>();
             services.AddTransient<IAttachmentRepository, AttachmentRepository>();
             services.AddTransient<IUserCourseReository, UserCourseRepository>();
+            services.AddTransient<IMessageRepositoy, MessageRepository>();
             #endregion
 
 

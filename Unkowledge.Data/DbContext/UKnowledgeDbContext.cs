@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -12,7 +13,16 @@ using UKnowledge.Core.Entity.AuthenticationModels;
 
 namespace UKnowledge.Web.DbContext
 {
-    public class UKnowledgeDbContext : IdentityDbContext<User>
+    public class UKnowledgeDbContext : IdentityDbContext<
+        User
+        , Role
+        , Guid
+        , IdentityUserClaim<Guid>
+        , IdentityUserRole<Guid>
+        , IdentityUserLogin<Guid>
+        , IdentityRoleClaim<Guid>
+        , IdentityUserToken<Guid>
+        >
     {
         public UKnowledgeDbContext(DbContextOptions<UKnowledgeDbContext> options) : base(options)
         {
@@ -21,6 +31,7 @@ namespace UKnowledge.Web.DbContext
         public DbSet<Attachments> Attachments { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<UserCourse> UserCourses { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

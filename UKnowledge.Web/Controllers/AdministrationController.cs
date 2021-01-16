@@ -12,10 +12,10 @@ namespace UKnowledge.Web.Controllers
 {
     public class AdministrationController : Controller
     {
-        public RoleManager<IdentityRole> _roleManager { get; }
+        public RoleManager<Role> _roleManager { get; }
         public UserManager<User> _userManager { get; }
 
-        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
+        public AdministrationController(RoleManager<Role> roleManager, UserManager<User> userManager)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -36,7 +36,7 @@ namespace UKnowledge.Web.Controllers
                 ViewBag.Message = "Role name can't be null";
                 return View();
             }
-            var newRole = new IdentityRole { Name = roleViewModel.Name };
+            var newRole = new Role { Name = roleViewModel.Name };
             var result = await _roleManager.CreateAsync(newRole);
             if (result.Succeeded)
             {
@@ -65,7 +65,7 @@ namespace UKnowledge.Web.Controllers
             foreach (var role in roleList)
             {
                 RoleViewModel roleViewModel = new RoleViewModel();
-                roleViewModel.Id = role.Id;
+                roleViewModel.Id = role.Id.ToString();
                 roleViewModel.Name = role.Name;
 
                 roleViewModels.Add(roleViewModel);
@@ -79,7 +79,7 @@ namespace UKnowledge.Web.Controllers
             {
                 #region Converting role(IdentityRole)  to RoleViewModel
                 RoleViewModel roleViewModel = new RoleViewModel();
-                roleViewModel.Id = role.Id;
+                roleViewModel.Id = role.Id.ToString();
                 roleViewModel.Name = role.Name;
                 #endregion
                 return View(roleViewModel);

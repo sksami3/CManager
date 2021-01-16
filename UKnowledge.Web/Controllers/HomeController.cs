@@ -16,11 +16,11 @@ namespace UKnowledge.Web.Controllers
     {
         public UserManager<User> _userManager { get; }
         public SignInManager<User> _signInManager { get; }
-        public RoleManager<IdentityRole> _roleManager { get; }
+        public RoleManager<Role> _roleManager { get; }
 
         public HomeController(UserManager<User> userManager,
             SignInManager<User> signInManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<Role> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

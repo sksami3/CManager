@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using UKnowledge.Core.Entity.Base;
 using UKnowledge.Web.DbContext;
 using Unkowledge.Core.Interfaces.Repositories.Base;
+
 
 namespace Unkowledge.Data.Repositories.Base
 {

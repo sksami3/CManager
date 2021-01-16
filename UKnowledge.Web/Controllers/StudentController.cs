@@ -25,10 +25,10 @@ namespace UKnowledge.Web.Controllers
         private readonly ICourseService _courseService;
         private readonly IAttachmentsService _attachmentsService;
         private readonly IUserCourseService _userCourseService;
-        public RoleManager<IdentityRole> _roleManager { get; }
+        public RoleManager<Role> _roleManager { get; }
         public UserManager<User> _userManager { get; }
         public StudentController( 
-            RoleManager<IdentityRole> roleManager, 
+            RoleManager<Role> roleManager, 
             UserManager<User> userManager,
             ICourseService courseService,
             IAttachmentsService attachmentsService,

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using UKnowledge.Core.Entity.AuthenticationModels;
+using UKnowledge.Web.DbContext;
 using UKnowledge.Web.Enums;
 using UKnowledge.Web.Models.ViewModels;
 
@@ -20,11 +21,11 @@ namespace UKnowledge.Web.Controllers
     {
         private UserManager<User> _userManager { get; }
         private SignInManager<User> _signInManager { get; }
-        private RoleManager<IdentityRole> _roleManager { get; }
+        private RoleManager<Role> _roleManager { get; }
 
         public UserController(UserManager<User> userManager,
             SignInManager<User> signInManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<Role> roleManager, UKnowledgeDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -34,12 +35,12 @@ namespace UKnowledge.Web.Controllers
         public ActionResult SignUp()
         {
             #region Dropdown
-            List<IdentityRole> identityRoles = new List<IdentityRole>()
+            List<Role> identityRoles = new List<Role>()
             {
-                new IdentityRole(){
+                new Role(){
                     Name = RoleEnum.Staff.ToString()
                 },
-                new IdentityRole(){
+                new Role(){
                     Name = RoleEnum.Student.ToString()
                 }
             };
@@ -51,12 +52,12 @@ namespace UKnowledge.Web.Controllers
         public async Task<ActionResult> SignUp(UserViewModel userViewModel)
         {
             #region Dropdown
-            List<IdentityRole> identityRoles = new List<IdentityRole>()
+            List<Role> identityRoles = new List<Role>()
             {
-                new IdentityRole(){
+                new Role(){
                     Name = RoleEnum.Staff.ToString()
                 },
-                new IdentityRole(){
+                new Role(){
                     Name = RoleEnum.Student.ToString()
                 }
             };
@@ -68,19 +69,27 @@ namespace UKnowledge.Web.Controllers
                 try
                 {
                     #region Here we'll find if the role is created if not the we'll create the role
-                    var role = await _roleManager.FindByNameAsync(userViewModel.RoleId); //here role id is used to carry role name
-                    if(role == null)
+                    var role = await _roleManager.FindByNameAsync(userViewModel.RoleId); //here role id is used to carry role name//_context.Roles.Where(x=> x.Name == userViewModel.RoleId).SingleOrDefault();
+                    if (role == null)
                     {
-                        IdentityRole newRole = new IdentityRole();
+                        Role newRole = new Role();
                         newRole.Name = userViewModel.RoleId; //here role id is used to carry role name
-                        await _roleManager.CreateAsync(newRole);
+                        try
+                        {
+                            await _roleManager.CreateAsync(newRole);
+                        }
+                        catch(Exception e)
+                        {
+
+                        }
+                        
                         role = newRole;
                     }
                     #endregion
                     var result = await _userManager.CreateAsync(newUser, userViewModel.Password);
                     if (result.Succeeded)
                     {
-                        var user = await _userManager.FindByIdAsync(newUser.Id);
+                        var user = await _userManager.FindByIdAsync(newUser.Id.ToString());
                         var resultForRole = await _userManager.AddToRoleAsync(user, role.Name);
                         if (resultForRole.Succeeded)
                         {
