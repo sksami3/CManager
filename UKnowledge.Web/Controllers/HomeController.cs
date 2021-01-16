@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using UKnowledge.Core.Entity.AuthenticationModels;
 using UKnowledge.Web.Enums;
-using UKnowledge.Web.Models.AuthenticationModels;
 
 namespace UKnowledge.Web.Controllers
 {

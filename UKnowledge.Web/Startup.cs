@@ -5,15 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using UKnowledge.Core.Entity.AuthenticationModels;
 using UKnowledge.Web.DbContext;
-using UKnowledge.Web.Models.AuthenticationModels;
+using UKnowledge.Web.Socket;
 
 namespace UKnowledge.Web
 {
@@ -50,7 +53,11 @@ namespace UKnowledge.Web
             //ConfigureServices
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie();
-
+            services.AddSignalR();
+            services.Resolve();
+            services.AddMvc().AddNToastNotifyToastr();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton(typeof(IUserIdProvider), typeof(MyUserIdProvider));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,8 +87,9 @@ namespace UKnowledge.Web
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<NotificationHub>("/notificationhub");
             });
-
+            app.UseNToastNotify();
         }
     }
 }

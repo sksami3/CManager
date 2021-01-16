@@ -10,17 +10,17 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using UKnowledge.Core.Entity.AuthenticationModels;
 using UKnowledge.Web.Enums;
-using UKnowledge.Web.Models.AuthenticationModels;
 using UKnowledge.Web.Models.ViewModels;
 
 namespace UKnowledge.Web.Controllers
 {
     public class UserController : Controller
     {
-        public UserManager<User> _userManager { get; }
-        public SignInManager<User> _signInManager { get; }
-        public RoleManager<IdentityRole> _roleManager { get; }
+        private UserManager<User> _userManager { get; }
+        private SignInManager<User> _signInManager { get; }
+        private RoleManager<IdentityRole> _roleManager { get; }
 
         public UserController(UserManager<User> userManager,
             SignInManager<User> signInManager,
