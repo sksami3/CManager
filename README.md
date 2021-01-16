@@ -5,6 +5,6 @@ A simple course management system.
 •	Asp.Net Core 3.1 <br/>
 •	Entity Framework Core <br/>
 •	Identity <br/>
-•	Role Based Authorization
+•	Role Based Authorization <br/>
 •	SignalR
 
