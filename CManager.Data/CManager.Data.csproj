@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UKnowledge.Core\CManager.Core.csproj" />
+    <ProjectReference Include="..\CManager.Core\CManager.Core.csproj" />
   </ItemGroup>
 
 </Project>

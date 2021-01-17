@@ -40,9 +40,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UKnowledge.Core\CManager.Core.csproj" />
-    <ProjectReference Include="..\Uknowlege.Business\CManager.Business.csproj" />
-    <ProjectReference Include="..\Unkowledge.Data\CManager.Data.csproj" />
+    <ProjectReference Include="..\CManager.Business\CManager.Business.csproj" />
+    <ProjectReference Include="..\CManager.Core\CManager.Core.csproj" />
+    <ProjectReference Include="..\CManager.Data\CManager.Data.csproj" />
   </ItemGroup>
 
 </Project>
