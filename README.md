@@ -1,4 +1,4 @@
-# UKnowledge
+# CManager
 A simple course management system.
 
 # Technologies
