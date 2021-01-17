@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using UKnowledge.Core.Entity;
-using UKnowledge.Core.Entity.AuthenticationModels;
-using UKnowledge.Core.Interfaces.Repositories;
-using UKnowledge.Core.Interfaces.Services;
+using CManager.Core.Entity;
+using CManager.Core.Entity.AuthenticationModels;
+using CManager.Core.Interfaces.Repositories;
+using CManager.Core.Interfaces.Services;
 
-namespace Uknowledge.Business.Services
+namespace CManager.Business.Services
 {
     public class UserCourseService : IUserCourseService
     {

@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using UKnowledge.Web.DbContext;
+using CManager.Web.DbContext;
 
-namespace Uknowledge.Data.Migrations
+namespace CManager.Data.Migrations
 {
-    [DbContext(typeof(UKnowledgeDbContext))]
+    [DbContext(typeof(CManagerDbContext))]
     partial class UKnowledgeDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -120,7 +120,7 @@ namespace Uknowledge.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("UKnowledge.Core.Entity.Attachments", b =>
+            modelBuilder.Entity("CManager.Core.Entity.Attachments", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -158,7 +158,7 @@ namespace Uknowledge.Data.Migrations
                     b.ToTable("Attachments");
                 });
 
-            modelBuilder.Entity("UKnowledge.Core.Entity.AuthenticationModels.Role", b =>
+            modelBuilder.Entity("CManager.Core.Entity.AuthenticationModels.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -186,7 +186,7 @@ namespace Uknowledge.Data.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("UKnowledge.Core.Entity.AuthenticationModels.User", b =>
+            modelBuilder.Entity("CManager.Core.Entity.AuthenticationModels.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -261,7 +261,7 @@ namespace Uknowledge.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("UKnowledge.Core.Entity.Course", b =>
+            modelBuilder.Entity("CManager.Core.Entity.Course", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -297,7 +297,7 @@ namespace Uknowledge.Data.Migrations
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("UKnowledge.Core.Entity.Message", b =>
+            modelBuilder.Entity("CManager.Core.Entity.Message", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -337,7 +337,7 @@ namespace Uknowledge.Data.Migrations
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("UKnowledge.Core.Entity.UserCourse", b =>
+            modelBuilder.Entity("CManager.Core.Entity.UserCourse", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -374,7 +374,7 @@ namespace Uknowledge.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("UKnowledge.Core.Entity.AuthenticationModels.Role", null)
+                    b.HasOne("CManager.Core.Entity.AuthenticationModels.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -383,7 +383,7 @@ namespace Uknowledge.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("UKnowledge.Core.Entity.AuthenticationModels.User", null)
+                    b.HasOne("CManager.Core.Entity.AuthenticationModels.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -392,7 +392,7 @@ namespace Uknowledge.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("UKnowledge.Core.Entity.AuthenticationModels.User", null)
+                    b.HasOne("CManager.Core.Entity.AuthenticationModels.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -401,13 +401,13 @@ namespace Uknowledge.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("UKnowledge.Core.Entity.AuthenticationModels.Role", null)
+                    b.HasOne("CManager.Core.Entity.AuthenticationModels.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UKnowledge.Core.Entity.AuthenticationModels.User", null)
+                    b.HasOne("CManager.Core.Entity.AuthenticationModels.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -416,16 +416,16 @@ namespace Uknowledge.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("UKnowledge.Core.Entity.AuthenticationModels.User", null)
+                    b.HasOne("CManager.Core.Entity.AuthenticationModels.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("UKnowledge.Core.Entity.Attachments", b =>
+            modelBuilder.Entity("CManager.Core.Entity.Attachments", b =>
                 {
-                    b.HasOne("UKnowledge.Core.Entity.Course", "Course")
+                    b.HasOne("CManager.Core.Entity.Course", "Course")
                         .WithMany("Lectures")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -434,13 +434,13 @@ namespace Uknowledge.Data.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("UKnowledge.Core.Entity.Message", b =>
+            modelBuilder.Entity("CManager.Core.Entity.Message", b =>
                 {
-                    b.HasOne("UKnowledge.Core.Entity.AuthenticationModels.User", "FromUser")
+                    b.HasOne("CManager.Core.Entity.AuthenticationModels.User", "FromUser")
                         .WithMany("Messages")
                         .HasForeignKey("FromUserId");
 
-                    b.HasOne("UKnowledge.Core.Entity.AuthenticationModels.Role", "ToRole")
+                    b.HasOne("CManager.Core.Entity.AuthenticationModels.Role", "ToRole")
                         .WithMany()
                         .HasForeignKey("ToRoleId");
 
@@ -449,15 +449,15 @@ namespace Uknowledge.Data.Migrations
                     b.Navigation("ToRole");
                 });
 
-            modelBuilder.Entity("UKnowledge.Core.Entity.UserCourse", b =>
+            modelBuilder.Entity("CManager.Core.Entity.UserCourse", b =>
                 {
-                    b.HasOne("UKnowledge.Core.Entity.Course", "Course")
+                    b.HasOne("CManager.Core.Entity.Course", "Course")
                         .WithMany("UserCourses")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UKnowledge.Core.Entity.AuthenticationModels.User", "User")
+                    b.HasOne("CManager.Core.Entity.AuthenticationModels.User", "User")
                         .WithMany("UserCourses")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -468,14 +468,14 @@ namespace Uknowledge.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("UKnowledge.Core.Entity.AuthenticationModels.User", b =>
+            modelBuilder.Entity("CManager.Core.Entity.AuthenticationModels.User", b =>
                 {
                     b.Navigation("Messages");
 
                     b.Navigation("UserCourses");
                 });
 
-            modelBuilder.Entity("UKnowledge.Core.Entity.Course", b =>
+            modelBuilder.Entity("CManager.Core.Entity.Course", b =>
                 {
                     b.Navigation("Lectures");
 

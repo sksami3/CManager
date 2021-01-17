@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using UKnowledge.Core.Entity.AuthenticationModels;
-using UKnowledge.Core.Entity.Base;
+using CManager.Core.Entity.AuthenticationModels;
+using CManager.Core.Entity.Base;
 
-namespace UKnowledge.Core.Entity
+namespace CManager.Core.Entity
 {
     public class Message : BaseModel
     {

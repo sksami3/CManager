@@ -9,15 +9,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using UKnowledge.Core.Entity;
-using UKnowledge.Core.Entity.AuthenticationModels;
-using UKnowledge.Core.Interfaces.Services;
-using UKnowledge.Web.DbContext;
-using UKnowledge.Web.Enums;
-using UKnowledge.Web.Models;
-using UKnowledge.Web.Models.ViewModels;
+using CManager.Core.Entity;
+using CManager.Core.Entity.AuthenticationModels;
+using CManager.Core.Interfaces.Services;
+using CManager.Web.DbContext;
+using CManager.Web.Enums;
+using CManager.Web.Models;
+using CManager.Web.Models.ViewModels;
 
-namespace UKnowledge.Web.Controllers
+namespace CManager.Web.Controllers
 {
     [Authorize(Roles = "Student")]
     public class StudentController : Controller

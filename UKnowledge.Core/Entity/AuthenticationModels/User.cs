@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UKnowledge.Core.Entity.AuthenticationModels
+namespace CManager.Core.Entity.AuthenticationModels
 {
     public class User : IdentityUser<Guid>
     {

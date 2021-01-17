@@ -14,11 +14,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using UKnowledge.Core.Entity.AuthenticationModels;
-using UKnowledge.Web.DbContext;
-using UKnowledge.Web.Socket;
+using CManager.Core.Entity.AuthenticationModels;
+using CManager.Web.DbContext;
+using CManager.Web.Socket;
 
-namespace UKnowledge.Web
+namespace CManager.Web
 {
     public class Startup
     {
@@ -34,7 +34,7 @@ namespace UKnowledge.Web
         {
             services.AddControllersWithViews();
             services.AddControllers();
-            services.AddDbContext<UKnowledgeDbContext>(options =>
+            services.AddDbContext<CManagerDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<User, Role>(options =>
             {
@@ -46,7 +46,7 @@ namespace UKnowledge.Web
                 options.SignIn.RequireConfirmedEmail = false;
                 options.User.RequireUniqueEmail = true;
             })
-                .AddEntityFrameworkStores<UKnowledgeDbContext>();
+                .AddEntityFrameworkStores<CManagerDbContext>();
             #region basic authentication
             services.AddAuthentication();
             #endregion

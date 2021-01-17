@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace UKnowledge.Web.Models.ViewModels
+namespace CManager.Web.Models.ViewModels
 {
     public class UserViewModel
     {

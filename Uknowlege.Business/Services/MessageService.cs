@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using UKnowledge.Core.Entity;
-using UKnowledge.Core.Interfaces.Repositories;
-using UKnowledge.Core.Interfaces.Services;
+using CManager.Core.Entity;
+using CManager.Core.Interfaces.Repositories;
+using CManager.Core.Interfaces.Services;
 
-namespace Uknowledge.Business.Services
+namespace CManager.Business.Services
 {
     public class MessageService : IMessageService
     {

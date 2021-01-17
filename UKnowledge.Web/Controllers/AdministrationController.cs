@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using UKnowledge.Core.Entity.AuthenticationModels;
-using UKnowledge.Web.Models.ViewModels;
+using CManager.Core.Entity.AuthenticationModels;
+using CManager.Web.Models.ViewModels;
 
-namespace UKnowledge.Web.Controllers
+namespace CManager.Web.Controllers
 {
     public class AdministrationController : Controller
     {

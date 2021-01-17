@@ -6,9 +6,9 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UKnowledge.Core.Entity.AuthenticationModels;
+using CManager.Core.Entity.AuthenticationModels;
 
-namespace Uknowledge.Business.Utilities
+namespace CManager.Business.Utilities
 {
     public class Utilities
     {

@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UKnowledge.Core.Entity;
-using UKnowledge.Core.Interfaces.Repositories;
-using UKnowledge.Web.DbContext;
-using Unkowledge.Data.Repositories.Base;
+using CManager.Core.Entity;
+using CManager.Core.Interfaces.Repositories;
+using CManager.Web.DbContext;
+using CManager.Data.Repositories.Base;
 
-namespace Uknowledge.Data.Repositories
+namespace CManager.Data.Repositories
 {
     public class MessageRepository : BaseRepository<Message>, IMessageRepositoy
     {
-        private UKnowledgeDbContext _context;
-        public MessageRepository(UKnowledgeDbContext context)
+        private CManagerDbContext _context;
+        public MessageRepository(CManagerDbContext context)
             : base(context)
         {
             _context = context;

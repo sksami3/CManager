@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Uknowledge.Data.Migrations
+namespace CManager.Data.Migrations
 {
     public partial class final : Migration
     {

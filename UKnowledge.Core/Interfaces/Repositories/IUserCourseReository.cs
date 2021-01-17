@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using UKnowledge.Core.Entity;
-using UKnowledge.Core.Entity.AuthenticationModels;
-using Unkowledge.Core.Interfaces.Repositories.Base;
+using CManager.Core.Entity;
+using CManager.Core.Entity.AuthenticationModels;
+using CManager.Core.Interfaces.Repositories.Base;
 
-namespace UKnowledge.Core.Interfaces.Repositories
+namespace CManager.Core.Interfaces.Repositories
 {
     public interface IUserCourseReository : IBaseRepository<UserCourse>
     {

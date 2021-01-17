@@ -42,13 +42,6 @@ $(document).ready(function () {
         $("#cUL li").append('<li><small>' + user + ':</small> ' + messageView + '</span></a></li>');
     });
     $("#sendButton").on('click', function () {
-        connection.start().then(function () {
-            //toastr["warning"]("hub connected")
-            console.log('connected');
-        }).catch(function (err) {
-            return console.error(err.toString());
-        });
-        console.log("send button clicked.");
         connection.invoke("SendToRole", "Student", $("#messageTxt").val());
     });
     //connection.on("populateStudentsChatList", function (messageView) {

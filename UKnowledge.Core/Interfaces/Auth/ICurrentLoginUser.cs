@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace UKnowledge.Core.Interfaces.Auth
+namespace CManager.Core.Interfaces.Auth
 {
     public interface ICurrentLoginUser
     {

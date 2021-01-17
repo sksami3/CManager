@@ -1,14 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using System.Security.Claims;
-@inject SignInManager<UKnowledge.Core.Entity.AuthenticationModels.User> SignInManager
-@inject UserManager<UKnowledge.Core.Entity.AuthenticationModels.User> UserManager
+@inject SignInManager<CManager.Core.Entity.AuthenticationModels.User> SignInManager
+@inject UserManager<CManager.Core.Entity.AuthenticationModels.User> UserManager
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - UKnowledge</title>
+    <title>@ViewData["Title"] - CManager</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/tostr/toastr.css" rel="stylesheet" />
@@ -115,7 +115,7 @@
         @await Component.InvokeAsync("NToastNotify")
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">UKnowledge</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CManager</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -123,7 +123,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
 
-                        @if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.FindByNameAsync(User.Identity.Name).Result, UKnowledge.Web.Enums.RoleEnum.Staff.ToString()))
+                        @if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.FindByNameAsync(User.Identity.Name).Result, CManager.Web.Enums.RoleEnum.Staff.ToString()))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Staff" asp-action="AddCourse">Add Course</a>
@@ -132,7 +132,7 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Staff" asp-action="CoursesCreatedByCurrentUser">Created Courses</a>
                             </li>
                         }
-                        @if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.FindByNameAsync(User.Identity.Name).Result, UKnowledge.Web.Enums.RoleEnum.Student.ToString()))
+                        @if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.FindByNameAsync(User.Identity.Name).Result, CManager.Web.Enums.RoleEnum.Student.ToString()))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="SavedCourses">Saved Courses</a>
@@ -185,7 +185,7 @@
                                 <li></li>
                             </ul>
                         </div>
-                        @if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.FindByNameAsync(User.Identity.Name).Result, UKnowledge.Web.Enums.RoleEnum.Staff.ToString()))
+                        @if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.FindByNameAsync(User.Identity.Name).Result, CManager.Web.Enums.RoleEnum.Staff.ToString()))
                         {
                             <button type="button" id="sendButton" name="sendButton" class="btn">Send</button>
                         }
@@ -199,7 +199,7 @@
 
     <footer class="footer text-muted">
         <div class="container">
-            &copy; 2020 - UKnowledge - <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            &copy; 2020 - CManager - <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

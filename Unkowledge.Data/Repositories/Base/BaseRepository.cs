@@ -4,19 +4,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using UKnowledge.Core.Entity.Base;
-using UKnowledge.Web.DbContext;
-using Unkowledge.Core.Interfaces.Repositories.Base;
+using CManager.Core.Entity.Base;
+using CManager.Web.DbContext;
+using CManager.Core.Interfaces.Repositories.Base;
 
 
-namespace Unkowledge.Data.Repositories.Base
+namespace CManager.Data.Repositories.Base
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : BaseModel
     {
-        private readonly UKnowledgeDbContext context;
+        private readonly CManagerDbContext context;
         private DbSet<T> entities;
 
-        public BaseRepository(UKnowledgeDbContext context)
+        public BaseRepository(CManagerDbContext context)
         {
             this.context = context;
             entities = context.Set<T>();

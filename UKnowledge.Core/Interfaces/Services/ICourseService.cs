@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using UKnowledge.Core.Entity;
-using UKnowledge.Core.Entity.AuthenticationModels;
+using CManager.Core.Entity;
+using CManager.Core.Entity.AuthenticationModels;
 
-namespace UKnowledge.Core.Interfaces.Services
+namespace CManager.Core.Interfaces.Services
 {
     public interface ICourseService
     {

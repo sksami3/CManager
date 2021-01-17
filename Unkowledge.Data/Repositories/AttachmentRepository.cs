@@ -4,18 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UKnowledge.Core.Entity;
-using UKnowledge.Core.Interfaces.Repositories;
-using UKnowledge.Web.DbContext;
-using Unkowledge.Core.Interfaces.Repositories;
-using Unkowledge.Data.Repositories.Base;
+using CManager.Core.Entity;
+using CManager.Core.Interfaces.Repositories;
+using CManager.Web.DbContext;
+using CManager.Core.Interfaces.Repositories;
+using CManager.Data.Repositories.Base;
 
-namespace Unkowledge.Data.Repositories
+namespace CManager.Data.Repositories
 {
     public class AttachmentRepository : BaseRepository<Attachments>, IAttachmentRepository
     {
-        private UKnowledgeDbContext _context;
-        public AttachmentRepository(UKnowledgeDbContext context)
+        private CManagerDbContext _context;
+        public AttachmentRepository(CManagerDbContext context)
             : base(context)
         {
             _context = context;

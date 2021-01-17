@@ -12,16 +12,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using NToastNotify;
-using Uknowledge.Business.Utilities;
-using UKnowledge.Core.Entity;
-using UKnowledge.Core.Entity.AuthenticationModels;
-using UKnowledge.Core.Interfaces.Services;
-using UKnowledge.Web.DbContext;
-using UKnowledge.Web.Models;
-using UKnowledge.Web.Models.ViewModels;
-using UKnowledge.Web.Socket;
+using CManager.Business.Utilities;
+using CManager.Core.Entity;
+using CManager.Core.Entity.AuthenticationModels;
+using CManager.Core.Interfaces.Services;
+using CManager.Web.DbContext;
+using CManager.Web.Models;
+using CManager.Web.Models.ViewModels;
+using CManager.Web.Socket;
 
-namespace UKnowledge.Web.Controllers
+namespace CManager.Web.Controllers
 {
     [Authorize(Roles = "Staff")]
     public class StaffController : Controller

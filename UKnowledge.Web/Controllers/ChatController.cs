@@ -7,12 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Uknowledge.Business.Utilities;
-using UKnowledge.Core.Entity.AuthenticationModels;
-using UKnowledge.Core.Interfaces.Services;
-using UKnowledge.Web.Socket;
+using CManager.Core.Entity.AuthenticationModels;
+using CManager.Core.Interfaces.Services;
+using CManager.Web.Socket;
+using CManager.Business.Utilities;
 
-namespace UKnowledge.Web.Controllers
+namespace CManager.Web.Controllers
 {
     public class ChatController : Controller
     {

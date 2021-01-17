@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using UKnowledge.Core.Entity.Base;
+using CManager.Core.Entity.Base;
 
-namespace Unkowledge.Core.Interfaces.Repositories.Base
+namespace CManager.Core.Interfaces.Repositories.Base
 {
     public interface IBaseRepository<T> where T : BaseModel
     {

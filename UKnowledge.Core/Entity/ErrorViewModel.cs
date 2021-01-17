@@ -1,6 +1,6 @@
 using System;
 
-namespace UKnowledge.Core.Entity
+namespace CManager.Core.Entity
 {
     public class ErrorViewModel
     {

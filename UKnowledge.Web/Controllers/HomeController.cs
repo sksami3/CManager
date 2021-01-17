@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using UKnowledge.Core.Entity.AuthenticationModels;
-using UKnowledge.Web.Enums;
+using CManager.Core.Entity.AuthenticationModels;
+using CManager.Web.Enums;
 
-namespace UKnowledge.Web.Controllers
+namespace CManager.Web.Controllers
 {
     [Authorize]
     public class HomeController : Controller

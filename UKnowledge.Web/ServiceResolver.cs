@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using Uknowledge.Business.Services;
-using Uknowledge.Data.Repositories;
-using UKnowledge.Core.Interfaces.Repositories;
-using UKnowledge.Core.Interfaces.Services;
-using Uknowlege.Business.Services;
-using Unkowledge.Core.Interfaces.Repositories;
-using Unkowledge.Data.Repositories;
+using CManager.Business.Services;
+using CManager.Data.Repositories;
+using CManager.Core.Interfaces.Repositories;
+using CManager.Core.Interfaces.Services;
+using CManager.Business.Services;
 
-namespace UKnowledge.Web
+namespace CManager.Web
 {
     public static class ServiceResolver
     {
@@ -25,6 +23,7 @@ namespace UKnowledge.Web
             services.AddTransient<IAttachmentsService, AttachmentsService>();           
             services.AddTransient<IUserCourseService, UserCourseService>();
             services.AddTransient<IMessageService, MessageService>();
+            services.AddTransient<IRoleService, RoleService>();
             #endregion
 
             #region repositories
@@ -32,6 +31,7 @@ namespace UKnowledge.Web
             services.AddTransient<IAttachmentRepository, AttachmentRepository>();
             services.AddTransient<IUserCourseReository, UserCourseRepository>();
             services.AddTransient<IMessageRepositoy, MessageRepository>();
+            services.AddTransient<IRoleRepository, RoleRepository>();
             #endregion
 
 

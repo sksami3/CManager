@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using UKnowledge.Core.Entity;
-using Unkowledge.Core.Interfaces.Repositories.Base;
+using CManager.Core.Entity;
+using CManager.Core.Interfaces.Repositories.Base;
 
-namespace UKnowledge.Core.Interfaces.Repositories
+namespace CManager.Core.Interfaces.Repositories
 {
     public interface IMessageRepositoy : IBaseRepository<Message>
     {

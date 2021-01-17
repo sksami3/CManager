@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace UKnowledge.Core.Entity.Base
+namespace CManager.Core.Entity.Base
 {
     // <summary>
     /// Base model has the common elements as it's properties. So every model would be inharited from this BaseModel

@@ -8,12 +8,12 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using UKnowledge.Core.Entity;
-using UKnowledge.Core.Entity.AuthenticationModels;
+using CManager.Core.Entity;
+using CManager.Core.Entity.AuthenticationModels;
 
-namespace UKnowledge.Web.DbContext
+namespace CManager.Web.DbContext
 {
-    public class UKnowledgeDbContext : IdentityDbContext<
+    public class CManagerDbContext : IdentityDbContext<
         User
         , Role
         , Guid
@@ -24,7 +24,7 @@ namespace UKnowledge.Web.DbContext
         , IdentityUserToken<Guid>
         >
     {
-        public UKnowledgeDbContext(DbContextOptions<UKnowledgeDbContext> options) : base(options)
+        public CManagerDbContext(DbContextOptions<CManagerDbContext> options) : base(options)
         {
 
         }

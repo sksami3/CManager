@@ -1,5 +1,5 @@
 ﻿
-using UKnowledge.Core.Interfaces;
+using CManager.Core.Interfaces;
 
 namespace Inventory.Data
 {

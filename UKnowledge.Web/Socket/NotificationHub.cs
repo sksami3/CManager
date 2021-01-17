@@ -8,14 +8,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Uknowledge.Business.Utilities;
-using UKnowledge.Core.Entity;
-using UKnowledge.Core.Entity.AuthenticationModels;
-using UKnowledge.Core.Interfaces.Services;
-using UKnowledge.Web.DbContext;
-using UKnowledge.Web.Enums;
+using CManager.Business.Utilities;
+using CManager.Core.Entity;
+using CManager.Core.Entity.AuthenticationModels;
+using CManager.Core.Interfaces.Services;
+using CManager.Web.DbContext;
+using CManager.Web.Enums;
 
-namespace UKnowledge.Web.Socket
+namespace CManager.Web.Socket
 {
     public class NotificationHub : Hub
     {

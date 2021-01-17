@@ -1,6 +1,6 @@
-﻿using UKnowledge.Core.Interfaces.Repositories;
+﻿using CManager.Core.Interfaces.Repositories;
 
-namespace UKnowledge.Core.Interfaces
+namespace CManager.Core.Interfaces
 {
     public interface IUnitOfWork
     {
