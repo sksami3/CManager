@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using UKnowledge.Core.Entity.Base;
+using CManager.Core.Entity.Base;
 
-namespace UKnowledge.Core.Entity
+namespace CManager.Core.Entity
 {
     public class Attachments : BaseModel
     {

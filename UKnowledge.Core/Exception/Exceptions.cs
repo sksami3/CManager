@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace UKnowledge.Core.Exception
+namespace CManager.Core.Exception
 {
     public class Exceptions
     {

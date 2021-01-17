@@ -7,32 +7,34 @@ using System.Threading.Tasks;
 using CManager.Core.Entity;
 using CManager.Core.Interfaces.Repositories;
 using CManager.Web.DbContext;
-using CManager.Core.Interfaces.Repositories;
 using CManager.Data.Repositories.Base;
 
 namespace CManager.Data.Repositories
 {
-    public class AttachmentRepository : BaseRepository<Attachments>, IAttachmentRepository
+    public class MessageRepository : BaseRepository<Message>, IMessageRepositoy
     {
         private CManagerDbContext _context;
-        public AttachmentRepository(CManagerDbContext context)
+        public MessageRepository(CManagerDbContext context)
             : base(context)
         {
             _context = context;
         }
 
-        public async Task<List<Attachments>> GetAttachmentsByCourseId(int id)
+        public async Task<List<Message>> GetMessageHistoryByRoleName(string roleName)
         {
-            var result = _context.Set<Attachments>().Where(x => x.Id == id);
-            return await result.ToListAsync();//await All(x => x.CourseId == id).ToListAsync();
+            return await _context.Set<Message>().Where(m => m.ToRole.Name == roleName)
+                    .Include(m => m.FromUser)
+                    .Include(m => m.ToRole)
+                    .OrderByDescending(m => m.CreatedDate)
+                    .Reverse().ToListAsync();
         }
 
-        public Task Remove(int attachmentId)
+        public Task Remove(int messageId)
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateAttachments(Attachments attachment)
+        public Task UpdateMessage(Message message)
         {
             throw new NotImplementedException();
         }

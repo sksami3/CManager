@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using UKnowledge.Core.Entity;
-using UKnowledge.Core.Entity.AuthenticationModels;
-using UKnowledge.Core.Interfaces.Services;
-using Unkowledge.Core.Interfaces.Repositories;
+using CManager.Core.Entity;
+using CManager.Core.Entity.AuthenticationModels;
+using CManager.Core.Interfaces.Services;
+using CManager.Core.Interfaces.Repositories;
 
-namespace Uknowlege.Business.Services
+namespace CManager.Business.Services
 {
     public class CourseService : ICourseService
     {

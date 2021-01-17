@@ -1,10 +1,21 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>CManager.Web</AssemblyName>
+    <RootNamespace>CManager.Web</RootNamespace>
+    <ApplicationIcon>book_icon6765.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\NewFolder\**" />
+    <Content Remove="wwwroot\NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\NewFolder\**" />
+    <None Remove="wwwroot\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.1">
@@ -26,13 +37,12 @@
   <ItemGroup>
     <Folder Include="wwwroot\Attachments\" />
     <Folder Include="wwwroot\tostr\" />
-    <Folder Include="wwwroot\NewFolder\" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UKnowledge.Core\UKnowledge.Core.csproj" />
-    <ProjectReference Include="..\Uknowlege.Business\Uknowledge.Business.csproj" />
-    <ProjectReference Include="..\Unkowledge.Data\Uknowledge.Data.csproj" />
+    <ProjectReference Include="..\UKnowledge.Core\CManager.Core.csproj" />
+    <ProjectReference Include="..\Uknowlege.Business\CManager.Business.csproj" />
+    <ProjectReference Include="..\Unkowledge.Data\CManager.Data.csproj" />
   </ItemGroup>
 
 </Project>

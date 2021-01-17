@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using UKnowledge.Core.Entity;
+using CManager.Core.Entity;
 
-namespace UKnowledge.Core.Interfaces.Services
+namespace CManager.Core.Interfaces.Services
 {
     public interface IAttachmentsService
     {

@@ -10,36 +10,41 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using UKnowledge.Core.Entity.AuthenticationModels;
-using UKnowledge.Web.Enums;
-using UKnowledge.Web.Models.ViewModels;
+using CManager.Core.Entity.AuthenticationModels;
+using CManager.Web.DbContext;
+using CManager.Web.Enums;
+using CManager.Web.Models.ViewModels;
+using CManager.Core.Interfaces.Services;
 
-namespace UKnowledge.Web.Controllers
+namespace CManager.Web.Controllers
 {
     public class UserController : Controller
     {
         private UserManager<User> _userManager { get; }
         private SignInManager<User> _signInManager { get; }
-        private RoleManager<IdentityRole> _roleManager { get; }
+        private RoleManager<Role> _roleManager { get; }
+        private IRoleService _roleService;
 
         public UserController(UserManager<User> userManager,
             SignInManager<User> signInManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<Role> roleManager,
+            IRoleService roleService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _roleService = roleService;
         }
         // GET: UserController
         public ActionResult SignUp()
         {
             #region Dropdown
-            List<IdentityRole> identityRoles = new List<IdentityRole>()
+            List<Role> identityRoles = new List<Role>()
             {
-                new IdentityRole(){
+                new Role(){
                     Name = RoleEnum.Staff.ToString()
                 },
-                new IdentityRole(){
+                new Role(){
                     Name = RoleEnum.Student.ToString()
                 }
             };
@@ -51,82 +56,83 @@ namespace UKnowledge.Web.Controllers
         public async Task<ActionResult> SignUp(UserViewModel userViewModel)
         {
             #region Dropdown
-            List<IdentityRole> identityRoles = new List<IdentityRole>()
+            List<Role> identityRoles = new List<Role>()
             {
-                new IdentityRole(){
+                new Role(){
                     Name = RoleEnum.Staff.ToString()
                 },
-                new IdentityRole(){
+                new Role(){
                     Name = RoleEnum.Student.ToString()
                 }
             };
             ViewBag.roleList = new SelectList(identityRoles, "Name", "Name");
             #endregion
-            User newUser = new User { Email = userViewModel.Email, UserName = userViewModel.UserName };
-            using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                try
-                {
-                    #region Here we'll find if the role is created if not the we'll create the role
-                    var role = await _roleManager.FindByNameAsync(userViewModel.RoleId); //here role id is used to carry role name
-                    if(role == null)
-                    {
-                        IdentityRole newRole = new IdentityRole();
-                        newRole.Name = userViewModel.RoleId; //here role id is used to carry role name
-                        await _roleManager.CreateAsync(newRole);
-                        role = newRole;
-                    }
-                    #endregion
-                    var result = await _userManager.CreateAsync(newUser, userViewModel.Password);
-                    if (result.Succeeded)
-                    {
-                        var user = await _userManager.FindByIdAsync(newUser.Id);
-                        var resultForRole = await _userManager.AddToRoleAsync(user, role.Name);
-                        if (resultForRole.Succeeded)
-                        {
-                            scope.Complete();
-                            ViewBag.Message = "Registered Successfully!!!";
+            User newUser = new User { Id = Guid.NewGuid(), Email = userViewModel.Email, UserName = userViewModel.UserName };
 
-                            return View();
-                        }
-                        else
-                        {
-                            if (resultForRole.Errors.ToList().Count() != 0)
-                            {
-                                ViewBag.Message = Helper.Helper.GetErrorList(resultForRole);
-                                scope.Dispose();
-                                return View();
-                            }
-                            else
-                            {
-                                ViewBag.Message = "Error occoured!!!";
-                                scope.Dispose();
-                                return View();
-                            }
-                        }
+            try
+            {
+                #region Here we'll find if the role is created if not the we'll create the role
+                var role = await _roleManager.FindByNameAsync(userViewModel.RoleId); //here role id is used to carry role name//_context.Roles.Where(x=> x.Name == userViewModel.RoleId).SingleOrDefault();
+                if (role == null)
+                {
+                    Role newRole = new Role();
+                    newRole.Name = userViewModel.RoleId; //here role id is used to carry role name
+                    try
+                    {
+                        await _roleService.AddAsync(newRole);
+                        //await _roleManager.CreateAsync(newRole);
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+
+                    role = newRole;
+                }
+                #endregion
+                var result = await _userManager.CreateAsync(newUser, userViewModel.Password);
+                if (result.Succeeded)
+                {
+                    var user = await _userManager.FindByIdAsync(newUser.Id.ToString());
+                    var resultForRole = await _userManager.AddToRoleAsync(user, role.Name);
+                    if (resultForRole.Succeeded)
+                    {
+                        ViewBag.Message = "Registered Successfully!!!";
+
+                        return View();
                     }
                     else
                     {
-                        if (result.Errors.ToList().Count() != 0)
+                        if (resultForRole.Errors.ToList().Count() != 0)
                         {
-                            ViewBag.Message = Helper.Helper.GetErrorList(result); ;
-                            scope.Dispose();
+                            ViewBag.Message = Helper.Helper.GetErrorList(resultForRole);
                             return View();
                         }
                         else
                         {
                             ViewBag.Message = "Error occoured!!!";
-                            scope.Dispose();
                             return View();
                         }
                     }
                 }
-                catch (Exception e)
+                else
                 {
-                    ViewBag.Message = "Error occoured!!!";
-                    scope.Dispose();
-                    return View();
+                    if (result.Errors.ToList().Count() != 0)
+                    {
+                        ViewBag.Message = Helper.Helper.GetErrorList(result); ;
+                        return View();
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Error occoured!!!";
+                        return View();
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                ViewBag.Message = "Error occoured!!!";
+                return View();
             }
         }
 

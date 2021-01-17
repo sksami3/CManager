@@ -6,19 +6,19 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using UKnowledge.Core.Entity;
-using UKnowledge.Core.Entity.AuthenticationModels;
-using UKnowledge.Core.Exception;
-using UKnowledge.Core.Interfaces.Repositories;
-using UKnowledge.Web.DbContext;
-using Unkowledge.Data.Repositories.Base;
+using CManager.Core.Entity;
+using CManager.Core.Entity.AuthenticationModels;
+using CManager.Core.Exception;
+using CManager.Core.Interfaces.Repositories;
+using CManager.Web.DbContext;
+using CManager.Data.Repositories.Base;
 
-namespace Uknowledge.Data.Repositories
+namespace CManager.Data.Repositories
 {
     public class UserCourseRepository : BaseRepository<UserCourse>, IUserCourseReository
     {
-        private UKnowledgeDbContext _context;
-        public UserCourseRepository(UKnowledgeDbContext context)
+        private CManagerDbContext _context;
+        public UserCourseRepository(CManagerDbContext context)
             : base(context)
         {
             _context = context;

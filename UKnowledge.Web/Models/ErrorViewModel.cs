@@ -1,6 +1,6 @@
 using System;
 
-namespace UKnowledge.Web.Models
+namespace CManager.Web.Models
 {
     public class ErrorViewModel
     {

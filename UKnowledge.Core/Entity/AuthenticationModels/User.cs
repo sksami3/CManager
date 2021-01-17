@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UKnowledge.Core.Entity.AuthenticationModels
+namespace CManager.Core.Entity.AuthenticationModels
 {
-    public class User : IdentityUser
+    public class User : IdentityUser<Guid>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -18,5 +18,6 @@ namespace UKnowledge.Core.Entity.AuthenticationModels
         //If account activation required
         //public Guid ActivationCode { get; set; }
         #endregion
+        public virtual ICollection<Message> Messages { get; set; }
     }
 }

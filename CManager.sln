@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UKnowledge.Web", "UKnowledge.Web\UKnowledge.Web.csproj", "{C414BB90-010A-40E7-9002-9ED829157C3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CManager.Web", "UKnowledge.Web\CManager.Web.csproj", "{C414BB90-010A-40E7-9002-9ED829157C3E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UKnowledge.Core", "UKnowledge.Core\UKnowledge.Core.csproj", "{712FD81F-F32E-486D-8E76-27DD139CB50C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CManager.Core", "UKnowledge.Core\CManager.Core.csproj", "{712FD81F-F32E-486D-8E76-27DD139CB50C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uknowledge.Data", "Unkowledge.Data\Uknowledge.Data.csproj", "{57A94A95-4BE1-48D7-97C4-2CE2A6148F55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CManager.Data", "Unkowledge.Data\CManager.Data.csproj", "{57A94A95-4BE1-48D7-97C4-2CE2A6148F55}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uknowledge.Business", "Uknowlege.Business\Uknowledge.Business.csproj", "{3DF8352F-B809-48CB-A595-1D71EFB1B0F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CManager.Business", "Uknowlege.Business\CManager.Business.csproj", "{3DF8352F-B809-48CB-A595-1D71EFB1B0F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

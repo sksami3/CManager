@@ -1,4 +1,4 @@
-﻿namespace Unkowledge.Core.Interfaces.logger
+﻿namespace CManager.Core.Interfaces.logger
 {
     public interface ILoggerManager
     {

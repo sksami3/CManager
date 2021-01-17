@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -7,20 +8,30 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using UKnowledge.Core.Entity;
-using UKnowledge.Core.Entity.AuthenticationModels;
+using CManager.Core.Entity;
+using CManager.Core.Entity.AuthenticationModels;
 
-namespace UKnowledge.Web.DbContext
+namespace CManager.Web.DbContext
 {
-    public class UKnowledgeDbContext : IdentityDbContext<User>
+    public class CManagerDbContext : IdentityDbContext<
+        User
+        , Role
+        , Guid
+        , IdentityUserClaim<Guid>
+        , IdentityUserRole<Guid>
+        , IdentityUserLogin<Guid>
+        , IdentityRoleClaim<Guid>
+        , IdentityUserToken<Guid>
+        >
     {
-        public UKnowledgeDbContext(DbContextOptions<UKnowledgeDbContext> options) : base(options)
+        public CManagerDbContext(DbContextOptions<CManagerDbContext> options) : base(options)
         {
 
         }
         public DbSet<Attachments> Attachments { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<UserCourse> UserCourses { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

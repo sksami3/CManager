@@ -5,18 +5,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using UKnowledge.Core.Entity;
-using UKnowledge.Core.Exception;
-using UKnowledge.Web.DbContext;
-using Unkowledge.Core.Interfaces.Repositories;
-using Unkowledge.Data.Repositories.Base;
+using CManager.Core.Entity;
+using CManager.Core.Exception;
+using CManager.Web.DbContext;
+using CManager.Core.Interfaces.Repositories;
+using CManager.Data.Repositories.Base;
 
-namespace Unkowledge.Data.Repositories
+namespace CManager.Data.Repositories
 {
     public class CouseRepository : BaseRepository<Course>, ICourseRepository
     {
-        private UKnowledgeDbContext _context;
-        public CouseRepository(UKnowledgeDbContext context)
+        private CManagerDbContext _context;
+        public CouseRepository(CManagerDbContext context)
             : base(context)
         {
             _context = context;

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using UKnowledge.Core.Entity.Base;
+using CManager.Core.Entity.Base;
 
-namespace UKnowledge.Core.Entity
+namespace CManager.Core.Entity
 {
     public class Course : BaseModel
     {

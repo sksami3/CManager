@@ -7,10 +7,10 @@ using CManager.Core.Interfaces.Repositories.Base;
 
 namespace CManager.Core.Interfaces.Repositories
 {
-    public interface IAttachmentRepository : IBaseRepository<Attachments>
+    public interface IMessageRepositoy : IBaseRepository<Message>
     {
-        Task Remove(int attachmentId);
-        Task UpdateAttachments(Attachments attachment);
-        Task<List<Attachments>> GetAttachmentsByCourseId(int id);
+        Task Remove(int messageId);
+        Task UpdateMessage(Message message);
+        Task<List<Message>> GetMessageHistoryByRoleName(string roleName);
     }
 }

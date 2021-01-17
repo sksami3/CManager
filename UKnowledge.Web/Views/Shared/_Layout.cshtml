@@ -1,14 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using System.Security.Claims;
-@inject SignInManager<UKnowledge.Core.Entity.AuthenticationModels.User> SignInManager
-@inject UserManager<UKnowledge.Core.Entity.AuthenticationModels.User> UserManager
+@inject SignInManager<CManager.Core.Entity.AuthenticationModels.User> SignInManager
+@inject UserManager<CManager.Core.Entity.AuthenticationModels.User> UserManager
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - UKnowledge</title>
+    <title>@ViewData["Title"] - CManager</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/tostr/toastr.css" rel="stylesheet" />
@@ -20,6 +20,93 @@
         textarea {
             width: 100%;
         }
+
+        .cUL {
+            height: 200px;
+            width: 100%;
+        }
+
+        .cUL {
+            overflow: hidden;
+            overflow-y: scroll;
+        }
+
+        .listformsg {
+            border: 1px solid black;
+            padding-right: 0px;
+            padding-left: 28px;
+            width: 50px;
+            border-radius: 5px;
+        }
+        /* Button used to open the chat form - fixed at the bottom of the page */
+        .open-button {
+            background-color: #555;
+            color: white;
+            padding: 16px 20px;
+            border: none;
+            cursor: pointer;
+            opacity: 0.8;
+            position: fixed;
+            bottom: 23px;
+            right: 28px;
+            width: 280px;
+        }
+
+        /* The popup chat - hidden by default */
+        .chat-popup {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            right: 15px;
+            border: 3px solid #f1f1f1;
+            z-index: 9;
+        }
+
+        /* Add styles to the form container */
+        .form-container {
+            max-width: 300px;
+            padding: 10px;
+            background-color: white;
+        }
+
+            /* Full-width textarea */
+            .form-container textarea {
+                width: 100%;
+                padding: 15px;
+                margin: 5px 0 22px 0;
+                border: none;
+                background: #f1f1f1;
+                /*resize: none;
+                min-height: 200px;*/
+            }
+
+                /* When the textarea gets focus, do something */
+                .form-container textarea:focus {
+                    background-color: #ddd;
+                    outline: none;
+                }
+
+            /* Set a style for the submit/send button */
+            .form-container .btn {
+                background-color: #4CAF50;
+                color: white;
+                padding: 16px 20px;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                margin-bottom: 10px;
+                opacity: 0.8;
+            }
+
+            /* Add a red background color to the cancel button */
+            .form-container .cancel {
+                background-color: red;
+            }
+
+            /* Add some hover effects to buttons */
+            .form-container .btn:hover, .open-button:hover {
+                opacity: 1;
+            }
     </style>
 </head>
 
@@ -28,7 +115,7 @@
         @await Component.InvokeAsync("NToastNotify")
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">UKnowledge</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CManager</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -36,7 +123,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
 
-                        @if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.FindByNameAsync(User.Identity.Name).Result, UKnowledge.Web.Enums.RoleEnum.Staff.ToString()))
+                        @if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.FindByNameAsync(User.Identity.Name).Result, CManager.Web.Enums.RoleEnum.Staff.ToString()))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Staff" asp-action="AddCourse">Add Course</a>
@@ -45,11 +132,14 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Staff" asp-action="CoursesCreatedByCurrentUser">Created Courses</a>
                             </li>
                         }
-                        @if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.FindByNameAsync(User.Identity.Name).Result, UKnowledge.Web.Enums.RoleEnum.Student.ToString()))
+                        @if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.FindByNameAsync(User.Identity.Name).Result, CManager.Web.Enums.RoleEnum.Student.ToString()))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="SavedCourses">Saved Courses</a>
                             </li>
+                            @*<li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Chat" asp-action="Index">Chat List</a>
+                            </li>*@
                         }
 
                     </ul>
@@ -80,12 +170,36 @@
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <button class="open-button" onclick="openForm()">Chat</button>
+                <div class="chat-popup" id="myForm">
+                    <section class="form-container">
+                        <h1>Chat</h1>
+
+                        <label for="msg"><b>Message</b></label>
+                        <textarea id="messageTxt" name="messageTxt" placeholder="Type message..">
+                        </textarea>
+                        <div class="col-md-12">
+                            <ul class="cUL" id="cUL" name="cUL">
+                                <li></li>
+                            </ul>
+                        </div>
+                        @if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.FindByNameAsync(User.Identity.Name).Result, CManager.Web.Enums.RoleEnum.Staff.ToString()))
+                        {
+                            <button type="button" id="sendButton" name="sendButton" class="btn">Send</button>
+                        }
+                        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                    </section>
+                </div>
+            }
         </main>
+
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer text-muted">
         <div class="container">
-            &copy; 2020 - UKnowledge - <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            &copy; 2020 - CManager - <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -95,5 +209,14 @@
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/noti.js"></script>
     @RenderSection("Scripts", required: false)
+    <script>
+        function openForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+    </script>
 </body>
 </html>

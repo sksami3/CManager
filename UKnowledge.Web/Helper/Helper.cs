@@ -5,12 +5,12 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using UKnowledge.Core.Entity;
-using UKnowledge.Core.Entity.AuthenticationModels;
-using UKnowledge.Web.Models;
-using UKnowledge.Web.Models.ViewModels;
+using CManager.Core.Entity;
+using CManager.Core.Entity.AuthenticationModels;
+using CManager.Web.Models;
+using CManager.Web.Models.ViewModels;
 
-namespace UKnowledge.Web.Helper
+namespace CManager.Web.Helper
 {
     public static class Helper
     {
